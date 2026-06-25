@@ -1,0 +1,190 @@
+@import "tailwindcss";
+
+/* next-themes uses a class on <html>, so drive Tailwind's dark: variant from it. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ----------------------------------------------------------------------------
+   Engineering-Technical design tokens
+   Dark-first. Both themes designed together. Signal accent on ink.
+---------------------------------------------------------------------------- */
+:root {
+  /* Surfaces */
+  --background: #fafaf7;
+  --surface: #ffffff;
+  --surface-2: #f3f3ee;
+  --foreground: #0a0a0b;
+  --muted-foreground: #5a5a52;
+  --border: #e3e3dc;
+  --border-strong: #cfcfc6;
+
+  /* Signal accents */
+  --accent: #b26a00; /* amber, darkened for AA on light */
+  --accent-bright: #f5a524; /* used on dark surfaces / large bold */
+  --accent-soft: rgba(245, 165, 36, 0.12);
+  --status: #4d7c0f; /* lime, darkened for AA on light */
+  --status-bright: #a3e635;
+
+  --grid-line: rgba(10, 10, 11, 0.045);
+}
+
+.dark {
+  --background: #0a0a0b;
+  --surface: #121316;
+  --surface-2: #17181c;
+  --foreground: #e8e8e3;
+  --muted-foreground: #8a8a82;
+  --border: #26272b;
+  --border-strong: #34353a;
+
+  --accent: #f5a524;
+  --accent-bright: #f5a524;
+  --accent-soft: rgba(245, 165, 36, 0.1);
+  --status: #a3e635;
+  --status-bright: #a3e635;
+
+  --grid-line: rgba(232, 232, 227, 0.05);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-accent: var(--accent);
+  --color-accent-bright: var(--accent-bright);
+  --color-status: var(--status);
+  --color-status-bright: var(--status-bright);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans), system-ui, sans-serif;
+    /* Faint engineering graph-paper grid */
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 56px 56px;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Tabular figures everywhere mono is used (IDs, years, stats) */
+  .font-mono {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
+  }
+
+  /* Always-visible, on-brand focus ring */
+  :focus-visible {
+    outline: 2px solid var(--accent-bright);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: var(--accent-bright);
+    color: #0a0a0b;
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   Custom utilities (these were referenced but never defined before)
+---------------------------------------------------------------------------- */
+@utility perspective-1000 {
+  perspective: 1000px;
+}
+
+@utility preserve-3d {
+  transform-style: preserve-3d;
+}
+
+@utility translate-z-10 {
+  transform: translateZ(10px);
+}
+
+@utility translate-z-20 {
+  transform: translateZ(20px);
+}
+
+@utility text-glow {
+  text-shadow: 0 0 24px var(--accent-soft);
+}
+
+@utility backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+@utility rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+/* Dot-grid accent block (used behind hero / framed media) */
+@utility bg-dotgrid {
+  background-image: radial-gradient(
+    var(--border-strong) 1px,
+    transparent 1px
+  );
+  background-size: 18px 18px;
+}
+
+/* Scanline texture for schematic project placeholders */
+@utility bg-scanlines {
+  background-image: repeating-linear-gradient(
+    0deg,
+    var(--grid-line),
+    var(--grid-line) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+}
+
+/* ----------------------------------------------------------------------------
+   Motion: respect prefers-reduced-motion globally
+---------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes cmdk-pop {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
