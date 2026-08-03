@@ -1,5 +1,5 @@
 import React from "react"
-import { ArrowRight, MapPin } from "lucide-react"
+import { ArrowRight, Download, MapPin } from "lucide-react"
 import { profile } from "@/lib/content"
 import { MonoLabel, StatusDot } from "@/components/ui-elements"
 import { GithubIcon, LinkedinIcon } from "@/components/icons"
@@ -86,6 +86,15 @@ export function Hero() {
               className="inline-flex h-11 w-11 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground"
             >
               <LinkedinIcon size={20} />
+            </a>
+            <a
+              href="/downloads/PemantauanADHD-Setup-0.3.6.exe"
+              download
+              aria-label="Download installer Pemantauan ADHD Tugas Akhir versi 0.3.6"
+              className="ml-1 inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-accent/40 bg-accent-soft px-3 font-mono text-xs font-medium text-accent-bright transition-colors hover:border-accent-bright hover:bg-accent-bright hover:text-[#0a0a0b]"
+            >
+              <Download size={16} />
+              Download TA
             </a>
           </div>
         </div>
