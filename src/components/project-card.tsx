@@ -55,10 +55,24 @@ export function SpecCard({ project }: { project: Project }) {
         >
           {/* Schematic header */}
           <div className="bg-scanlines bg-dotgrid relative flex h-36 items-center justify-center overflow-hidden border-b border-border bg-surface-2">
-            <span className="select-none font-mono text-3xl font-bold tracking-widest text-border-strong transition-colors group-hover:text-accent/40">
-              {project.id}
-            </span>
-            <span className="absolute left-3 top-3 font-mono text-[10px] tracking-widest text-muted-foreground">
+            {hasImages ? (
+              <>
+                {/* Decorative thumbnail; the project title remains the accessible label. */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={project.images[0]}
+                  alt=""
+                  aria-hidden="true"
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                />
+                <span className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/45 via-transparent to-black/25" />
+              </>
+            ) : (
+              <span className="select-none font-mono text-3xl font-bold tracking-widest text-border-strong transition-colors group-hover:text-accent/40">
+                {project.id}
+              </span>
+            )}
+            <span className={`absolute left-3 top-3 font-mono text-[10px] tracking-widest ${hasImages ? "text-white/80 drop-shadow" : "text-muted-foreground"}`}>
               {project.id} · {project.year}
             </span>
             <span
