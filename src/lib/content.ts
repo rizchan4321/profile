@@ -86,6 +86,8 @@ export interface Project {
   stack: string[];
   github?: string;
   demo?: string;
+  download?: string;
+  downloadLabel?: string;
   images: string[];
 }
 
@@ -98,6 +100,9 @@ export const projects: Project[] = [
     summary:
       "Estimasi tingkat fokus & emosi anak menggunakan MediaPipe Face Mesh + CNN (weighted late fusion) untuk analisis perilaku real-time.",
     stack: ["MediaPipe", "CNN", "Python", "Deep Learning"],
+    github: "https://github.com/rizchan4321/yolo-ADHD",
+    download: "/downloads/PemantauanADHD-Setup-0.3.6.exe",
+    downloadLabel: "installer 0.3.6",
     images: [],
   },
   {

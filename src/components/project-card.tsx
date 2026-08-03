@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useRef, useState } from "react"
-import { ArrowUpRight, RotateCcw, ChevronLeft, ChevronRight, ExternalLink } from "lucide-react"
+import { ArrowUpRight, RotateCcw, ChevronLeft, ChevronRight, Download, ExternalLink } from "lucide-react"
 import type { Project, ProjectStatus } from "@/lib/content"
 import { GithubIcon } from "@/components/icons"
 
@@ -188,7 +188,17 @@ export function SpecCard({ project }: { project: Project }) {
                   <ExternalLink size={15} /> demo
                 </a>
               )}
-              {!project.github && !project.demo && (
+              {project.download && (
+                <a
+                  href={project.download}
+                  download
+                  tabIndex={flipped ? 0 : -1}
+                  className="inline-flex items-center gap-1.5 font-mono text-xs text-accent-bright transition-colors hover:text-white"
+                >
+                  <Download size={15} /> {project.downloadLabel ?? "installer"}
+                </a>
+              )}
+              {!project.github && !project.demo && !project.download && (
                 <span className="font-mono text-xs text-white/40">
                   {"// links coming soon"}
                 </span>
