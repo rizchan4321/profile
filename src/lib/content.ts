@@ -96,7 +96,7 @@ export const projects: Project[] = [
     id: "PRJ-001",
     title: "Pemantauan ADHD (Tugas Akhir)",
     status: "RESEARCH",
-    year: "2025",
+    year: "2026",
     summary:
       "Estimasi tingkat fokus & emosi anak menggunakan MediaPipe Face Mesh + CNN (weighted late fusion) untuk analisis perilaku real-time.",
     stack: ["MediaPipe", "CNN", "Python", "Deep Learning"],
@@ -107,32 +107,23 @@ export const projects: Project[] = [
   },
   {
     id: "PRJ-002",
-    title: "SIGAP Safety Platform",
-    status: "RESEARCH",
-    year: "2026",
+    title: "Instalasi Listrik & Otomasi",
+    status: "DEPLOYED",
+    year: "2025",
     summary:
-      "Monitoring keselamatan pekerja tambang: YOLOv8 PPE detection, MediaPipe drowsiness detection, ESP32 wearable, & React dashboard.",
-    stack: ["YOLOv8", "ESP32", "React.js", "IoT"],
+      "Mengimplementasikan sistem instalasi listrik dan otomasi di sebuah fasilitas industri.",
+    stack: ["PLC", "grounding", "MCB", "HMI"],
     images: [],
   },
   {
-    id: "PRJ-004",
-    title: "Digital Wedding Invitation",
+    id: "PRJ-003",
+    title: "Point of Sale System",
     status: "FREELANCE",
     year: "2024",
     summary:
-      "Premium HTML/CSS landing page dengan GSAP animations, countdown timer, RSVP form, dan backsound musik.",
-    stack: ["GSAP", "HTML/CSS", "JavaScript", "Animation"],
-    images: [],
-  },
-  {
-    id: "PRJ-005",
-    title: "School Information System",
-    status: "FREELANCE",
-    year: "2025",
-    summary:
-      "Web-based application with a React/Next.js frontend and a Laravel backend API for school data management.",
-    stack: ["React.js", "Next.js", "Laravel", "MySQL"],
+      "merancang dan membuat sistem point of sale untuk sebuah usaha lokal di ayam geprek saly.",
+    stack: ["bootstrap", "HTML/CSS", "JavaScript", "PHP", "MySQL"],
+    demo: "https://bilgisa.id",
     images: [],
   },
 ];
