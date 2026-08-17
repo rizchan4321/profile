@@ -88,9 +88,9 @@ export function Hero() {
               <LinkedinIcon size={20} />
             </a>
             <a
-              href="/downloads/PemantauanADHD-Setup-0.3.6.exe"
+              href="/downloads/PemantauanADHD-Setup-0.3.8.exe"
               download
-              aria-label="Download installer Pemantauan ADHD Tugas Akhir versi 0.3.6"
+              aria-label="Download installer Pemantauan ADHD Tugas Akhir versi 0.3.8"
               className="ml-1 inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-accent/40 bg-accent-soft px-3 font-mono text-xs font-medium text-accent-bright transition-colors hover:border-accent-bright hover:bg-accent-bright hover:text-[#0a0a0b]"
             >
               <Download size={16} />
