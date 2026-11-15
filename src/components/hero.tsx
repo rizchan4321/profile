@@ -1,20 +1,75 @@
+"use client"
+
 import Image from "next/image"
-import { heroTags, profile } from "@/lib/content"
+import { useEffect, useRef } from "react"
+import { gsap } from "gsap"
+import { heroSkills, profile } from "@/lib/content"
 
-// Chip positions around the hero image (desktop only; stacked on mobile).
-const chipPos = [
-  "md:left-[6%] md:top-[18%]",
-  "md:right-[6%] md:top-[28%]",
-  "md:left-[10%] md:bottom-[30%]",
-  "md:right-[9%] md:bottom-[22%]",
-]
+const MOBILE_LABELS = 6
 
+// The stage is a real CSS 3D scene: the photo is a plane at z=0, skill labels
+// orbit on a horizontal circle (x/z), so they pass in front of and behind the photo.
 export function Hero() {
+  const stageRef = useRef<HTMLDivElement>(null)
+  const ringRef = useRef<HTMLDivElement>(null)
+  const labelRefs = useRef<(HTMLLIElement | null)[]>([])
+
+  useEffect(() => {
+    const stage = stageRef.current
+    const ring = ringRef.current
+    if (!stage || !ring) return
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    let angle = 0
+
+    const place = () => {
+      const w = stage.offsetWidth
+      // Narrow screens: tighter orbit and only the first 6 labels (rest are max-sm:hidden).
+      const narrow = w < 640
+      const n = narrow ? MOBILE_LABELS : heroSkills.length
+      const r = narrow ? w * 0.36 : Math.min(w * 0.46, 330)
+      ring.style.width = ring.style.height = `${r * 2}px`
+      labelRefs.current.forEach((el, i) => {
+        if (!el || i >= n) return
+        const t = angle + (i / n) * Math.PI * 2
+        const z = Math.sin(t) * r
+        el.style.transform = `translate(-50%, -50%) translate3d(${Math.cos(t) * r}px, 0, ${z}px)`
+        el.style.opacity = String(0.55 + 0.45 * ((z / r + 1) / 2))
+      })
+    }
+
+    place()
+    if (reduce) {
+      window.addEventListener("resize", place)
+      return () => window.removeEventListener("resize", place)
+    }
+
+    const tick = (_t: number, dt: number) => {
+      angle += dt * 0.00035
+      place()
+    }
+    gsap.ticker.add(tick)
+
+    // Mouse tilt on top of the base downward camera angle.
+    const rotX = gsap.quickTo(stage, "rotationX", { duration: 0.8, ease: "power3.out" })
+    const rotY = gsap.quickTo(stage, "rotationY", { duration: 0.8, ease: "power3.out" })
+    gsap.set(stage, { rotationX: -14, rotationY: 0 })
+    const onMove = (e: PointerEvent) => {
+      rotY((e.clientX / window.innerWidth - 0.5) * 18)
+      rotX(-14 - (e.clientY / window.innerHeight - 0.5) * 10)
+    }
+    window.addEventListener("pointermove", onMove)
+
+    return () => {
+      gsap.ticker.remove(tick)
+      window.removeEventListener("pointermove", onMove)
+    }
+  }, [])
+
   return (
     <section id="top" className="glow-ink relative overflow-hidden px-4 pb-16 pt-28 text-white sm:pt-32">
       <div className="mx-auto max-w-6xl text-center">
         <p className="hero-item mx-auto inline-flex rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs text-white/80">
-          {profile.tagline}
+          {profile.name}, {profile.title} · {profile.location}
         </p>
 
         <h1 className="hero-item mt-6 font-display text-[clamp(1.6rem,5vw,3.6rem)] font-semibold uppercase leading-[1.1] tracking-tight">
@@ -22,47 +77,66 @@ export function Hero() {
           <span className="block text-accent">{profile.role}</span>
         </h1>
 
-        <p className="hero-item mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-on-ink-muted sm:text-base">
+        <div className="hero-item relative mx-auto mt-4 h-[440px] max-w-4xl [perspective:1100px] sm:h-[560px]">
+          {/* Glow behind the photo */}
+          <div className="absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/30 blur-3xl sm:h-96 sm:w-96" />
+
+          <div ref={stageRef} className="absolute inset-0 [transform:rotateX(-14deg)] [transform-style:preserve-3d]">
+            <div className="absolute inset-x-0 bottom-0 top-0 [transform-style:preserve-3d]">
+              {/* Orbit ring lying flat in the x/z plane, at chest height */}
+              <div
+                ref={ringRef}
+                aria-hidden="true"
+                className="absolute left-1/2 top-[48%] rounded-full border border-accent/50 shadow-[0_0_40px_rgba(255,91,31,0.25)] [transform:translate(-50%,-50%)_rotateX(90deg)]"
+              />
+
+              <div className="absolute bottom-0 left-1/2 h-full w-[220px] -translate-x-1/2 sm:w-[260px]">
+                <Image
+                  src={profile.photo}
+                  alt={`Foto ${profile.name}`}
+                  fill
+                  priority
+                  sizes="260px"
+                  className="object-contain object-bottom [mask-image:linear-gradient(to_bottom,black_80%,transparent)]"
+                />
+              </div>
+
+              {/* preserve-3d makes the <ul> the containing block, so it must fill the stage */}
+              <ul aria-label="Keahlian utama" className="absolute inset-0 [transform-style:preserve-3d]">
+                {heroSkills.map((skill, i) => (
+                  <li
+                    key={skill}
+                    ref={(el) => {
+                      labelRefs.current[i] = el
+                    }}
+                    className={`${i >= MOBILE_LABELS ? "max-sm:hidden " : ""}absolute left-1/2 top-[48%] whitespace-nowrap rounded-full border border-white/15 bg-ink/80 px-3 py-1.5 text-[11px] font-medium text-white shadow-lg shadow-black/40 backdrop-blur-sm will-change-transform sm:text-xs`}
+                  >
+                    <span className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full bg-accent align-middle" />
+                    {skill}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <p className="hero-item mx-auto mt-6 max-w-2xl text-sm leading-relaxed text-on-ink-muted sm:text-base">
           {profile.summary}
         </p>
 
-        <div className="hero-item relative mx-auto mt-10 max-w-5xl">
-          <div className="relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-[2rem] border border-white/10 sm:aspect-[4/3] sm:max-w-2xl">
-            <Image
-              src={profile.heroImage}
-              alt="Pekerjaan troubleshooting dan perbaikan rangkaian elektronik"
-              fill
-              priority
-              sizes="(min-width: 640px) 672px, 100vw"
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/20 to-transparent" />
-            <div className="absolute inset-x-0 bottom-6 flex flex-wrap justify-center gap-3 px-4">
-              <a
-                href="#projects"
-                className="inline-flex h-12 items-center rounded-full bg-accent-strong px-6 text-sm font-semibold transition-colors hover:bg-accent"
-              >
-                Lihat Project
-              </a>
-              <a
-                href="#contact"
-                className="inline-flex h-12 items-center rounded-full bg-white px-6 text-sm font-semibold text-ink transition-colors hover:bg-white/85"
-              >
-                Hubungi Saya
-              </a>
-            </div>
-          </div>
-
-          <ul className="mt-6 flex flex-wrap justify-center gap-2 md:mt-0">
-            {heroTags.map((tag, i) => (
-              <li
-                key={tag}
-                className={`rounded-full bg-accent-strong px-3.5 py-1.5 text-xs font-medium shadow-lg shadow-black/30 md:absolute ${chipPos[i]}`}
-              >
-                {tag}
-              </li>
-            ))}
-          </ul>
+        <div className="hero-item mt-7 flex flex-wrap justify-center gap-3">
+          <a
+            href="#projects"
+            className="inline-flex h-12 items-center rounded-full bg-accent-strong px-6 text-sm font-semibold transition-colors hover:bg-accent"
+          >
+            Lihat Project
+          </a>
+          <a
+            href="#contact"
+            className="inline-flex h-12 items-center rounded-full bg-white px-6 text-sm font-semibold text-ink transition-colors hover:bg-white/85"
+          >
+            Hubungi Saya
+          </a>
         </div>
       </div>
     </section>

@@ -11,14 +11,27 @@ export const profile = {
     "Lulusan D-III Teknik Elektronika POLTEKBA berpengalaman di electrical maintenance, troubleshooting, instalasi, dan sistem kontrol — dari panel 3 fasa dan PLC/HMI hingga IoT dan machine learning.",
   location: "Balikpapan, Kalimantan Timur",
   email: "Rizkirmdan7890@gmail.com",
-  heroImage: "/images/hero-hands-pcb.jpg",
+  title: "A.Md.T",
+  photo: "/images/rizki-cutout.png",
   links: {
     github: "https://github.com/rizchan4321",
     linkedin: "https://www.linkedin.com/in/rizkirmdan/",
   },
 } as const
 
-export const heroTags = ["PLC & HMI", "Motor 3 Fasa", "IoT", "Machine Learning"] as const
+// Skills orbiting the hero photo (from CV).
+export const heroSkills = [
+  "PLC Schneider",
+  "HMI Haiwell",
+  "Motor 3 Fasa",
+  "VSD / Inverter",
+  "Panel Listrik",
+  "IoT · ESP32",
+  "Machine Learning",
+  "Troubleshooting",
+  "Preventive Maintenance",
+  "Web Development",
+] as const
 
 export const intro = {
   title: "Membangun sistem kelistrikan yang andal dan cerdas untuk industri",
