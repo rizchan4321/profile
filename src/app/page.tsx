@@ -3,16 +3,19 @@
 import React, { useEffect, useLayoutEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { ScrollSmoother } from "gsap/ScrollSmoother"
 import { Navbar } from "@/components/navbar"
 import { CommandPalette } from "@/components/command-palette"
 import { Hero } from "@/components/hero"
 import { Intro, Process, Tools, Services, Projects, Experience, Credentials, Faq } from "@/components/sections"
 import { Contact } from "@/components/contact"
 
-gsap.registerPlugin(ScrollTrigger)
+gsap.registerPlugin(ScrollTrigger, ScrollSmoother)
 
 // Avoid the SSR warning while still preventing first-paint flicker.
 const useIsoLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect
+
+const NAV_OFFSET = "top 64px"
 
 export default function Home() {
   const root = useRef<HTMLDivElement>(null)
@@ -20,39 +23,78 @@ export default function Home() {
   useIsoLayoutEffect(() => {
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia()
+
       // Full motion only when the user has no reduced-motion preference.
       mm.add("(prefers-reduced-motion: no-preference)", () => {
-        gsap.from(".hero-item", { y: 24, opacity: 0, duration: 0.7, stagger: 0.08, ease: "power3.out" })
+        // Buttery scroll on desktop; touch devices keep native scrolling.
+        ScrollSmoother.create({ wrapper: "#smooth-wrapper", content: "#smooth-content", smooth: 1.1 })
+
+        // Curtain: hero stays put while the light content slides up over it.
+        const cover = { trigger: "#top", start: "bottom bottom", end: "bottom top", scrub: true }
+        ScrollTrigger.create({ ...cover, pin: true, pinSpacing: false, scrub: false })
+        gsap.to(".hero-inner", { scale: 0.88, opacity: 0.25, y: -60, ease: "none", scrollTrigger: cover })
+
         gsap.utils.toArray<HTMLElement>(".reveal").forEach((el) => {
           gsap.from(el, {
-            y: 32,
+            y: 60,
             opacity: 0,
-            duration: 0.6,
-            ease: "power2.out",
-            scrollTrigger: { trigger: el, start: "top 88%" },
+            duration: 1.1,
+            ease: "expo.out",
+            scrollTrigger: { trigger: el, start: "top 90%" },
           })
+        })
+
+        // Slow parallax drift inside framed images.
+        gsap.utils.toArray<HTMLElement>(".parallax img").forEach((img) => {
+          gsap.fromTo(
+            img,
+            { yPercent: -8, scale: 1.18 },
+            { yPercent: 8, ease: "none", scrollTrigger: { trigger: img.parentElement, scrub: true } }
+          )
         })
       })
     }, root)
-    return () => ctx.revert()
+
+    // In-page links: go through the smoother when it exists, native jump otherwise.
+    const onClick = (e: MouseEvent) => {
+      const a = (e.target as HTMLElement).closest<HTMLAnchorElement>('a[href^="#"]')
+      const target = a && document.querySelector(a.getAttribute("href")!)
+      const smoother = ScrollSmoother.get()
+      if (!target || !smoother) return
+      e.preventDefault()
+      smoother.scrollTo(target, true, NAV_OFFSET)
+    }
+    document.addEventListener("click", onClick)
+
+    return () => {
+      document.removeEventListener("click", onClick)
+      ctx.revert()
+    }
   }, [])
 
   return (
     <div ref={root}>
+      {/* Fixed UI must live outside the smoothed (transformed) content. */}
       <Navbar />
       <CommandPalette />
-      <main>
-        <Hero />
-        <Intro />
-        <Process />
-        <Tools />
-        <Services />
-        <Projects />
-        <Experience />
-        <Credentials />
-        <Faq />
-        <Contact />
-      </main>
+      <div id="smooth-wrapper">
+        <div id="smooth-content">
+          <main>
+            <Hero />
+            <div className="relative z-10 -mt-10 rounded-t-[2.5rem] bg-paper shadow-[0_-30px_60px_rgba(0,0,0,0.45)]">
+              <Intro />
+              <Process />
+              <Tools />
+              <Services />
+              <Projects />
+              <Experience />
+              <Credentials />
+              <Faq />
+              <Contact />
+            </div>
+          </main>
+        </div>
+      </div>
     </div>
   )
 }

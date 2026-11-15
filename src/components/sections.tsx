@@ -1,7 +1,7 @@
 import Image from "next/image"
 import { ArrowUpRight, Check, ChevronDown, Code2, Cpu, Download, ExternalLink, Wifi, Zap } from "lucide-react"
 import { GithubIcon } from "@/components/icons"
-import { credentials, experience, faqs, intro, process, projects, services, tools } from "@/lib/content"
+import { credentials, experience, faqs, intro, workflow, projects, services, tools } from "@/lib/content"
 
 function Heading({ title, center }: { title: string; center?: boolean }) {
   return (
@@ -32,7 +32,7 @@ export function Intro() {
           </div>
         </div>
 
-        <div className="reveal relative mt-10 aspect-[16/9] overflow-hidden rounded-3xl sm:aspect-[21/9]">
+        <div className="reveal parallax relative mt-10 aspect-[16/9] overflow-hidden rounded-3xl sm:aspect-[21/9]">
           <Image src={intro.image} alt="Engineer bekerja di laboratorium otomasi" fill sizes="(min-width: 1152px) 1152px, 100vw" className="object-cover" />
         </div>
 
@@ -53,12 +53,12 @@ export function Process() {
   return (
     <section className="px-4 pb-20 sm:pb-24">
       <div className="mx-auto max-w-6xl">
-        <Heading title={process.title} />
-        <div className="reveal relative mt-8 aspect-[16/9] overflow-hidden rounded-3xl sm:aspect-[21/9]">
-          <Image src={process.image} alt="Merancang skema dan diagram rangkaian" fill sizes="(min-width: 1152px) 1152px, 100vw" className="object-cover" />
+        <Heading title={workflow.title} />
+        <div className="reveal parallax relative mt-8 aspect-[16/9] overflow-hidden rounded-3xl sm:aspect-[21/9]">
+          <Image src={workflow.image} alt="Merancang skema dan diagram rangkaian" fill sizes="(min-width: 1152px) 1152px, 100vw" className="object-cover" />
         </div>
         <ol className="mt-10 grid gap-8 sm:grid-cols-3">
-          {process.steps.map((step, i) => (
+          {workflow.steps.map((step, i) => (
             <li key={step.title} className="reveal border-t border-line pt-5">
               <span className="font-display text-2xl text-accent-strong">{String(i + 1).padStart(2, "0")}</span>
               <h3 className="mt-2 font-semibold">{step.title}</h3>

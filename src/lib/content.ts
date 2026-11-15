@@ -2,6 +2,9 @@
 // Stock photos in /public/images are from Unsplash (free license) — swap for real
 // photos of your own work when available.
 
+// Prefix for public assets (set when exporting for XAMPP; empty on the server).
+const base = process.env.NEXT_PUBLIC_BASE_PATH ?? ""
+
 export const profile = {
   name: "Muhammad Rizki Rahmadhan",
   shortName: "Rizki",
@@ -12,7 +15,7 @@ export const profile = {
   location: "Balikpapan, Kalimantan Timur",
   email: "Rizkirmdan7890@gmail.com",
   title: "A.Md.T",
-  photo: "/images/rizki-cutout.png",
+  photo: base + "/images/rizki.png",
   links: {
     github: "https://github.com/rizchan4321",
     linkedin: "https://www.linkedin.com/in/rizkirmdan/",
@@ -35,7 +38,7 @@ export const heroSkills = [
 
 export const intro = {
   title: "Membangun sistem kelistrikan yang andal dan cerdas untuk industri",
-  image: "/images/lab.jpg",
+  image: base + "/images/lab.jpg",
   card: {
     title: "Siap Bekerja di Industri",
     text: "Pengalaman lapangan di Pertamina Hulu Mahakam, PT Trakindo Utama, dan instalasi tenaga listrik — dengan prosedur keselamatan kerja sebagai prioritas.",
@@ -47,9 +50,9 @@ export const intro = {
   ],
 } as const
 
-export const process = {
+export const workflow = {
   title: "Cara saya bekerja",
-  image: "/images/schematic.jpg",
+  image: base + "/images/schematic.jpg",
   steps: [
     { title: "Analisis & Diagram", text: "Membaca diagram kelistrikan, analisis dasar, dan menemukan akar masalah peralatan." },
     { title: "Instalasi & Integrasi", text: "Panel 3 fasa, PLC Schneider/Omron, HMI Haiwell, VSD, hingga perangkat IoT." },
@@ -100,9 +103,9 @@ export const projects: Project[] = [
     summary:
       "Estimasi tingkat fokus & emosi anak ADHD dengan MediaPipe Face Mesh, CNN, dan sensor multimodal di Yayasan Daeng Mappacing Balikpapan.",
     stack: ["MediaPipe", "CNN", "Python", "Sensor Multimodal"],
-    image: "/projects/pemantauan-adhd.jpeg",
+    image: base + "/projects/pemantauan-adhd.jpeg",
     github: "https://github.com/rizchan4321/yolo-ADHD",
-    download: "/downloads/PemantauanADHD-Setup-0.3.9.exe",
+    download: base + "/downloads/PemantauanADHD-Setup-0.3.9.exe",
     downloadLabel: "Installer 0.3.9",
   },
   {
@@ -111,7 +114,7 @@ export const projects: Project[] = [
     year: "2025",
     summary: "Implementasi instalasi listrik dan sistem otomasi di fasilitas industri.",
     stack: ["PLC", "HMI", "MCB", "Grounding"],
-    image: "/images/electrician.jpg",
+    image: base + "/images/electrician.jpg",
   },
   {
     title: "Point of Sale System",
@@ -119,7 +122,7 @@ export const projects: Project[] = [
     year: "2024",
     summary: "Sistem kasir untuk UMKM Ayam Geprek Saly: penjualan, laporan keuangan, dan pesanan.",
     stack: ["PHP", "MySQL", "Bootstrap", "JavaScript"],
-    image: "/images/dashboard.jpg",
+    image: base + "/images/dashboard.jpg",
     demo: "https://bilgisa.id",
   },
 ]
@@ -129,21 +132,21 @@ export const experience = [
     period: "Okt 2026 — Sekarang",
     title: "Facility Maintenance",
     company: "PT Aviako · PT Trakindo Utama",
-    image: "/images/site-work.jpg",
+    image: base + "/images/site-work.jpg",
     desc: "Maintenance sistem pendingin, pemasangan sensor limit crane Demag, pemeliharaan motor listrik, dan general facility maintenance.",
   },
   {
     period: "Sep — Des 2025",
     title: "Magang HVAC & WTP",
     company: "PT Beasco Jaya Mandiri · Pertamina Hulu Mahakam",
-    image: "/images/industrial-motor.jpg",
+    image: base + "/images/industrial-motor.jpg",
     desc: "Troubleshooting AC split/inverter/cassette, pengujian motor 3 fasa dengan PLC Schneider & HMI Haiwell, dan preventive maintenance.",
   },
   {
     period: "Jul — Sep 2022",
     title: "Magang Instalasi Tenaga Listrik",
     company: "PT Nusa Jaya Mandiri",
-    image: "/images/circuit.jpg",
+    image: base + "/images/circuit.jpg",
     desc: "Troubleshooting kubikel termasuk penggantian CT, instalasi meteran ≥33.000 VA, dan pemeliharaan hingga penambahan daya.",
   },
 ] as const

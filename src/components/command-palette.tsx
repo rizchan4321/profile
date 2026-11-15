@@ -9,6 +9,7 @@ import {
   Copy,
   Check,
 } from "lucide-react"
+import { ScrollSmoother } from "gsap/ScrollSmoother"
 import { navLinks, profile } from "@/lib/content"
 import { GithubIcon, LinkedinIcon } from "@/components/icons"
 
@@ -49,8 +50,9 @@ export function CommandPalette() {
   const go = useCallback(
     (href: string) => {
       const el = document.querySelector(href)
-      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-      el?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" })
+      const smoother = ScrollSmoother.get()
+      if (el && smoother) smoother.scrollTo(el, true, "top 64px")
+      else el?.scrollIntoView({ block: "start" })
     },
     []
   )

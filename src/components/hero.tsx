@@ -1,24 +1,31 @@
 "use client"
 
 import Image from "next/image"
-import { useEffect, useRef } from "react"
+import { useEffect, useLayoutEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { heroSkills, profile } from "@/lib/content"
 
 const MOBILE_LABELS = 6
 
+// Run before paint so intro "from" states don't flash.
+const useIsoLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect
+
 // The stage is a real CSS 3D scene: the photo is a plane at z=0, skill labels
 // orbit on a horizontal circle (x/z), so they pass in front of and behind the photo.
 export function Hero() {
+  const rootRef = useRef<HTMLElement>(null)
   const stageRef = useRef<HTMLDivElement>(null)
   const ringRef = useRef<HTMLDivElement>(null)
   const labelRefs = useRef<(HTMLLIElement | null)[]>([])
 
-  useEffect(() => {
+  useIsoLayoutEffect(() => {
     const stage = stageRef.current
     const ring = ringRef.current
     if (!stage || !ring) return
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    // Orbit fade-in multiplier: labels/ring opacity is driven here, not by CSS,
+    // because opacity on elements inside preserve-3d would flatten the scene.
+    const intro = { a: reduce ? 1 : 0 }
     let angle = 0
 
     const place = () => {
@@ -28,12 +35,13 @@ export function Hero() {
       const n = narrow ? MOBILE_LABELS : heroSkills.length
       const r = narrow ? w * 0.36 : Math.min(w * 0.46, 330)
       ring.style.width = ring.style.height = `${r * 2}px`
+      ring.style.opacity = String(intro.a)
       labelRefs.current.forEach((el, i) => {
         if (!el || i >= n) return
         const t = angle + (i / n) * Math.PI * 2
         const z = Math.sin(t) * r
         el.style.transform = `translate(-50%, -50%) translate3d(${Math.cos(t) * r}px, 0, ${z}px)`
-        el.style.opacity = String(0.55 + 0.45 * ((z / r + 1) / 2))
+        el.style.opacity = String((0.55 + 0.45 * ((z / r + 1) / 2)) * intro.a)
       })
     }
 
@@ -42,6 +50,16 @@ export function Hero() {
       window.addEventListener("resize", place)
       return () => window.removeEventListener("resize", place)
     }
+
+    const ctx = gsap.context(() => {
+      // Intro: title first, then the photo slides up over it with buttons + glow + orbit.
+      gsap
+        .timeline()
+        .from(".hero-title", { y: -30, opacity: 0, duration: 1, stagger: 0.12, ease: "expo.out" })
+        .from(".hero-photo", { y: 260, opacity: 0, duration: 1.5, ease: "power4.out" }, "-=0.45")
+        .from(".hero-fade", { opacity: 0, duration: 1.2, ease: "power2.out" }, "<0.2")
+        .to(intro, { a: 1, duration: 1.2, ease: "power2.out" }, "<")
+    }, rootRef)
 
     const tick = (_t: number, dt: number) => {
       angle += dt * 0.00035
@@ -60,71 +78,71 @@ export function Hero() {
     window.addEventListener("pointermove", onMove)
 
     return () => {
+      ctx.revert()
       gsap.ticker.remove(tick)
       window.removeEventListener("pointermove", onMove)
     }
   }, [])
 
   return (
-    <section id="top" className="glow-ink relative overflow-hidden px-4 pb-16 pt-28 text-white sm:pt-32">
-      <div className="mx-auto max-w-6xl text-center">
-        <p className="hero-item mx-auto inline-flex rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs text-white/80">
+    <section ref={rootRef} id="top" className="glow-ink relative overflow-hidden px-4 pb-16 pt-28 text-white sm:pt-32">
+      <div className="hero-inner mx-auto max-w-6xl text-center">
+        <p className="hero-title mx-auto inline-flex rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs text-white/80">
           {profile.name}, {profile.title} · {profile.location}
         </p>
 
-        <h1 className="hero-item mt-6 font-display text-[clamp(1.6rem,5vw,3.6rem)] font-semibold uppercase leading-[1.1] tracking-tight">
+        <h1 className="hero-title relative mt-6 font-display text-[clamp(1.6rem,5vw,3.6rem)] font-semibold uppercase leading-[1.1] tracking-tight">
           Halo, saya {profile.shortName}
           <span className="block text-accent">{profile.role}</span>
         </h1>
 
-        <div className="hero-item relative mx-auto mt-4 h-[440px] max-w-4xl [perspective:1100px] sm:h-[560px]">
-          {/* Glow behind the photo */}
-          <div className="absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/30 blur-3xl sm:h-96 sm:w-96" />
+        {/* Negative margin pulls the photo up so it covers part of the title's second line. */}
+        <div className="relative z-10 mx-auto -mt-24 h-[480px] max-w-4xl [perspective:1100px] sm:-mt-36 sm:h-[620px]">
+          {/* Ambient glow behind the photo */}
+          <div className="hero-fade absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/30 blur-3xl sm:h-96 sm:w-96" />
 
           <div ref={stageRef} className="absolute inset-0 [transform:rotateX(-14deg)] [transform-style:preserve-3d]">
-            <div className="absolute inset-x-0 bottom-0 top-0 [transform-style:preserve-3d]">
-              {/* Orbit ring lying flat in the x/z plane, at chest height */}
-              <div
-                ref={ringRef}
-                aria-hidden="true"
-                className="absolute left-1/2 top-[48%] rounded-full border border-accent/50 shadow-[0_0_40px_rgba(255,91,31,0.25)] [transform:translate(-50%,-50%)_rotateX(90deg)]"
+            {/* Orbit ring lying flat in the x/z plane, at chest height */}
+            <div
+              ref={ringRef}
+              aria-hidden="true"
+              className="absolute left-1/2 top-[52%] rounded-full border border-accent/50 shadow-[0_0_40px_rgba(255,91,31,0.25)] [transform:translate(-50%,-50%)_rotateX(90deg)]"
+            />
+
+            <div className="hero-photo absolute bottom-0 left-1/2 h-full w-[320px] -translate-x-1/2 sm:w-[420px]">
+              <Image
+                src={profile.photo}
+                alt={`Foto ${profile.name}`}
+                fill
+                priority
+                sizes="(min-width: 640px) 420px, 320px"
+                className="object-contain object-bottom [mask-image:linear-gradient(to_bottom,black_80%,transparent)]"
               />
-
-              <div className="absolute bottom-0 left-1/2 h-full w-[220px] -translate-x-1/2 sm:w-[260px]">
-                <Image
-                  src={profile.photo}
-                  alt={`Foto ${profile.name}`}
-                  fill
-                  priority
-                  sizes="260px"
-                  className="object-contain object-bottom [mask-image:linear-gradient(to_bottom,black_80%,transparent)]"
-                />
-              </div>
-
-              {/* preserve-3d makes the <ul> the containing block, so it must fill the stage */}
-              <ul aria-label="Keahlian utama" className="absolute inset-0 [transform-style:preserve-3d]">
-                {heroSkills.map((skill, i) => (
-                  <li
-                    key={skill}
-                    ref={(el) => {
-                      labelRefs.current[i] = el
-                    }}
-                    className={`${i >= MOBILE_LABELS ? "max-sm:hidden " : ""}absolute left-1/2 top-[48%] whitespace-nowrap rounded-full border border-white/15 bg-ink/80 px-3 py-1.5 text-[11px] font-medium text-white shadow-lg shadow-black/40 backdrop-blur-sm will-change-transform sm:text-xs`}
-                  >
-                    <span className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full bg-accent align-middle" />
-                    {skill}
-                  </li>
-                ))}
-              </ul>
             </div>
+
+            {/* preserve-3d makes the <ul> the containing block, so it must fill the stage */}
+            <ul aria-label="Keahlian utama" className="absolute inset-0 [transform-style:preserve-3d]">
+              {heroSkills.map((skill, i) => (
+                <li
+                  key={skill}
+                  ref={(el) => {
+                    labelRefs.current[i] = el
+                  }}
+                  className={`${i >= MOBILE_LABELS ? "max-sm:hidden " : ""}absolute left-1/2 top-[52%] whitespace-nowrap rounded-full border border-white/15 bg-ink/80 px-3 py-1.5 text-[11px] font-medium text-white shadow-lg shadow-black/40 backdrop-blur-sm will-change-transform sm:text-xs`}
+                >
+                  <span className="mr-1.5 inline-block h-1.5 w-1.5 rounded-full bg-accent align-middle" />
+                  {skill}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
-        <p className="hero-item mx-auto mt-6 max-w-2xl text-sm leading-relaxed text-on-ink-muted sm:text-base">
+        <p className="hero-fade mx-auto mt-6 max-w-2xl text-sm leading-relaxed text-on-ink-muted sm:text-base">
           {profile.summary}
         </p>
 
-        <div className="hero-item mt-7 flex flex-wrap justify-center gap-3">
+        <div className="hero-fade mt-7 flex flex-wrap justify-center gap-3">
           <a
             href="#projects"
             className="inline-flex h-12 items-center rounded-full bg-accent-strong px-6 text-sm font-semibold transition-colors hover:bg-accent"
