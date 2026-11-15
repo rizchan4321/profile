@@ -7,7 +7,7 @@ import { ScrollSmoother } from "gsap/ScrollSmoother"
 import { Navbar } from "@/components/navbar"
 import { CommandPalette } from "@/components/command-palette"
 import { Hero } from "@/components/hero"
-import { Intro, Process, Tools, Services, Projects, Experience, Credentials, Faq } from "@/components/sections"
+import { Intro, Process, Tools, Services, Projects, Experience, Gallery, Credentials, Faq } from "@/components/sections"
 import { Contact } from "@/components/contact"
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother)
@@ -42,6 +42,35 @@ export default function Home() {
             ease: "expo.out",
             scrollTrigger: { trigger: el, start: "top 90%" },
           })
+        })
+
+        // Lists/cards: items entering together rise one after another (per row on grids).
+        gsap.set(".reveal-item", { opacity: 0, y: 70 })
+        gsap.set(".reveal-scale", { scale: 0.92 })
+        ScrollTrigger.batch(".reveal-item", {
+          start: "top 88%",
+          onEnter: (items) =>
+            gsap.to(items, { opacity: 1, y: 0, scale: 1, duration: 1, stagger: 0.14, ease: "expo.out", overwrite: true }),
+        })
+
+        // About card slides in over the photo's corner, a beat after the photo.
+        gsap.from(".about-card", {
+          x: 80,
+          opacity: 0,
+          duration: 1.1,
+          delay: 0.35,
+          ease: "expo.out",
+          scrollTrigger: { trigger: ".about-photo", start: "top 80%" },
+        })
+
+        // Dark CTA banner slides up and settles from a slight scale.
+        gsap.from(".reveal-band", {
+          y: 100,
+          scale: 0.94,
+          opacity: 0,
+          duration: 1.2,
+          ease: "expo.out",
+          scrollTrigger: { trigger: ".reveal-band", start: "top 90%" },
         })
 
         // Slow parallax drift inside framed images.
@@ -88,6 +117,7 @@ export default function Home() {
               <Services />
               <Projects />
               <Experience />
+              <Gallery />
               <Credentials />
               <Faq />
               <Contact />

@@ -24,21 +24,20 @@ export const profile = {
 
 // Skills orbiting the hero photo (from CV).
 export const heroSkills = [
-  "PLC Schneider",
+  "PLC programing",
   "HMI Haiwell",
-  "Motor 3 Fasa",
   "VSD / Inverter",
-  "Panel Listrik",
-  "IoT · ESP32",
+  "IoT Development",
   "Machine Learning",
-  "Troubleshooting",
-  "Preventive Maintenance",
+  "Electrical Installation",
+  "Automation Junior Engineer",
   "Web Development",
 ] as const
 
 export const intro = {
   title: "Membangun sistem kelistrikan yang andal dan cerdas untuk industri",
-  image: base + "/images/lab.jpg",
+  image: base + "/images/real/magang-beasco.jpg",
+  imageAlt: "Foto bersama tim magang di PT Beasco Jaya Mandiri",
   card: {
     title: "Siap Bekerja di Industri",
     text: "Pengalaman lapangan di Pertamina Hulu Mahakam, PT Trakindo Utama, dan instalasi tenaga listrik — dengan prosedur keselamatan kerja sebagai prioritas.",
@@ -52,16 +51,44 @@ export const intro = {
 
 export const workflow = {
   title: "Cara saya bekerja",
-  image: base + "/images/schematic.jpg",
+  image: base + "/images/real/cara-saya-bekerja.jpg",
+  imageAlt: "Rizki mempresentasikan project di depan kelas",
   steps: [
-    { title: "Analisis & Diagram", text: "Membaca diagram kelistrikan, analisis dasar, dan menemukan akar masalah peralatan." },
-    { title: "Instalasi & Integrasi", text: "Panel 3 fasa, PLC Schneider/Omron, HMI Haiwell, VSD, hingga perangkat IoT." },
-    { title: "Maintenance & Improvement", text: "Preventive maintenance dan continuous improvement untuk menjaga keandalan." },
+    {
+      title: "Analisis & Diagram",
+      text: "Membaca diagram kelistrikan, menyusun ladder diagram, dan menemukan akar masalah peralatan.",
+      image: base + "/images/real/ladder-diagram.jpg",
+      alt: "Dokumentasi pembuatan ladder diagram",
+    },
+    {
+      title: "Instalasi & Integrasi",
+      text: "Panel 3 fasa, PLC Schneider/Omron, HMI Haiwell, VSD, hingga perangkat IoT.",
+      image: base + "/images/real/plc-schneider-upload.jpg",
+      alt: "Mengunggah program ladder ke PLC Schneider",
+    },
+    {
+      title: "Maintenance & Improvement",
+      text: "Preventive maintenance dan continuous improvement untuk menjaga keandalan.",
+      image: base + "/images/real/sertifikasi-automation.jpg",
+      alt: "Sertifikasi Automation Maintenance Junior Engineer",
+    },
   ],
 } as const
 
 // Wordmarks shown in the "tools" strip (plain text, not official logos).
-export const tools = ["Schneider PLC", "Omron", "Haiwell HMI", "ESP32", "Python", "Next.js"] as const
+export const tools = [
+  "Schneider PLC",
+  "Omron",
+  "Haiwell HMI",
+  "ESP32",
+  "Arduino IDE",
+  "Python",
+  "TensorFlow",
+  "PyTorch",
+  "Next.js",
+  "GitHub",
+  "Azure VM",
+] as const
 
 export const services = [
   {
@@ -85,10 +112,12 @@ export const services = [
 export type Project = {
   title: string
   category: string
-  year: string
+  year?: string
   summary: string
   stack: string[]
   image: string
+  /** CSS object-position for cropping portrait photos into wide tiles. */
+  focus?: string
   github?: string
   demo?: string
   download?: string
@@ -103,18 +132,58 @@ export const projects: Project[] = [
     summary:
       "Estimasi tingkat fokus & emosi anak ADHD dengan MediaPipe Face Mesh, CNN, dan sensor multimodal di Yayasan Daeng Mappacing Balikpapan.",
     stack: ["MediaPipe", "CNN", "Python", "Sensor Multimodal"],
-    image: base + "/projects/pemantauan-adhd.jpeg",
+    image: base + "/images/real/mediapipe-tugas-akhir.jpg",
+    focus: "center 8%",
     github: "https://github.com/rizchan4321/yolo-ADHD",
     download: base + "/downloads/PemantauanADHD-Setup-0.3.9.exe",
     downloadLabel: "Installer 0.3.9",
   },
   {
-    title: "Instalasi Listrik & Otomasi",
-    category: "Electrical",
+    title: "Alat Stunting AI",
+    category: "AI · IoT · Juara 2 KMIPN VIII",
+    year: "2026",
+    summary:
+      "Alat berbasis AI untuk stunting yang meraih Juara 2 IoT kategori Bisnis & Skalabilitas di KMIPN VIII 2026 bersama tim Rekayasa Tektrone.",
+    stack: ["AI", "IoT", "Perakitan Hardware"],
+    image: base + "/images/real/stunting-ai-perakitan.jpg",
+  },
+  {
+    title: "Monitoring Suhu Ruang Server",
+    category: "IoT",
     year: "2025",
-    summary: "Implementasi instalasi listrik dan sistem otomasi di fasilitas industri.",
-    stack: ["PLC", "HMI", "MCB", "Grounding"],
-    image: base + "/images/electrician.jpg",
+    summary:
+      "Sistem monitoring suhu & kelembaban ruang server secara lokal: perangkat dengan LCD mengirim data ke dashboard web real-time dengan riwayat dan ekspor CSV.",
+    stack: ["IoT", "Sensor Suhu & Kelembaban", "LCD", "Web Dashboard"],
+    image: base + "/images/real/monitoring-suhu-server.jpg",
+  },
+  {
+    title: "Face Recognition dengan dlib",
+    category: "Computer Vision",
+    summary: "Penerapan pengenalan wajah menggunakan library dlib dengan Python.",
+    stack: ["Python", "dlib", "Computer Vision"],
+    image: base + "/images/real/face-recognition-dlib.jpg",
+  },
+  {
+    title: "Prototipe Alat Pemadam Api Berbasis Fuzzy",
+    category: "AI · Tugas Kecerdasan Buatan",
+    summary: "Prototipe alat pemadam api dengan logika fuzzy, dibuat untuk tugas mata kuliah kecerdasan buatan.",
+    stack: ["Fuzzy Logic", "Kecerdasan Buatan", "Prototipe"],
+    image: base + "/images/real/pemadam-api-fuzzy.jpg",
+  },
+  {
+    title: "Panel Pengujian Motor 3 Fasa",
+    category: "Electrical",
+    summary: "Perakitan panel untuk pengujian motor 3 fasa.",
+    stack: ["Panel Listrik", "Motor 3 Fasa", "Wiring"],
+    image: base + "/images/real/panel-motor-3fasa.jpg",
+  },
+  {
+    title: "Alat Pencacah Pakan Ikan Tenaga Surya",
+    category: "Pengabdian Masyarakat",
+    summary:
+      "Program Kemitraan Berdikari: meningkatkan produktivitas budidaya ikan lele dengan alat pencacah pakan bertenaga surya, didukung LPDP dan POLTEKBA.",
+    stack: ["Tenaga Surya", "Motor Listrik", "Pemberdayaan UMKM"],
+    image: base + "/images/real/kemitraan-banner.jpg",
   },
   {
     title: "Point of Sale System",
@@ -139,7 +208,7 @@ export const experience = [
     period: "Sep — Des 2025",
     title: "Magang HVAC & WTP",
     company: "PT Beasco Jaya Mandiri · Pertamina Hulu Mahakam",
-    image: base + "/images/industrial-motor.jpg",
+    image: base + "/images/real/troubleshooting-ac-split.jpg",
     desc: "Troubleshooting AC split/inverter/cassette, pengujian motor 3 fasa dengan PLC Schneider & HMI Haiwell, dan preventive maintenance.",
   },
   {
@@ -200,4 +269,13 @@ export const navLinks = [
   { name: "Projects", href: "#projects" },
   { name: "Experience", href: "#experience" },
   { name: "FAQ", href: "#faq" },
+] as const
+
+// Activity photos (user-provided). First item is shown large.
+export const gallery = [
+  { image: base + "/images/real/kmipn-poster.jpg", caption: "Juara 2 IoT — KMIPN VIII 2026" },
+  { image: base + "/images/real/penyerahan-juara-motor-listrik.jpg", caption: "Menyerahkan piala lomba motor listrik sebagai Koordinator IPTEK" },
+  { image: base + "/images/real/kmipn-sertifikat.jpg", caption: "Sertifikat Juara 2 KMIPN VIII 2026" },
+  { image: base + "/images/real/kemitraan-group.jpg", caption: "Program Kemitraan Berdikari" },
+  { image: base + "/images/real/mobile-app.jpg", caption: "Pemrograman aplikasi mobile" },
 ] as const

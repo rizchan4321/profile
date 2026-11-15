@@ -1,7 +1,7 @@
 import Image from "next/image"
 import { ArrowUpRight, Check, ChevronDown, Code2, Cpu, Download, ExternalLink, Wifi, Zap } from "lucide-react"
 import { GithubIcon } from "@/components/icons"
-import { credentials, experience, faqs, intro, workflow, projects, services, tools } from "@/lib/content"
+import { credentials, experience, faqs, gallery, intro, workflow, projects, services, tools } from "@/lib/content"
 
 function Heading({ title, center }: { title: string; center?: boolean }) {
   return (
@@ -19,9 +19,14 @@ export function Intro() {
   return (
     <section id="about" className="px-4 py-20 sm:py-24">
       <div className="mx-auto max-w-6xl">
-        <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
-          <Heading title={intro.title} />
-          <div className="reveal max-w-sm rounded-2xl bg-card p-5 shadow-sm">
+        <Heading title={intro.title} />
+
+        <div className="about-photo relative mt-10">
+          <div className="reveal parallax relative aspect-[16/9] overflow-hidden rounded-3xl sm:aspect-[21/9]">
+            <Image src={intro.image} alt={intro.imageAlt} fill sizes="(min-width: 1152px) 1152px, 100vw" className="object-cover" />
+          </div>
+          {/* Overlaps the photo's top-right corner on desktop; sits below it on mobile. */}
+          <div className="about-card relative z-10 mt-4 max-w-sm rounded-2xl bg-card p-5 shadow-xl shadow-black/10 md:absolute md:-top-16 md:right-6 md:mt-0">
             <div className="flex items-center justify-between">
               <h3 className="font-semibold">{intro.card.title}</h3>
               <span className="flex h-8 w-8 items-center justify-center rounded-full bg-accent-strong text-white">
@@ -32,13 +37,9 @@ export function Intro() {
           </div>
         </div>
 
-        <div className="reveal parallax relative mt-10 aspect-[16/9] overflow-hidden rounded-3xl sm:aspect-[21/9]">
-          <Image src={intro.image} alt="Engineer bekerja di laboratorium otomasi" fill sizes="(min-width: 1152px) 1152px, 100vw" className="object-cover" />
-        </div>
-
         <dl className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
           {intro.stats.map((s) => (
-            <div key={s.label} className="reveal rounded-2xl bg-card p-5">
+            <div key={s.label} className="reveal-item rounded-2xl bg-card p-5">
               <dt className="text-sm text-muted">{s.label}</dt>
               <dd className="mt-1 font-display text-3xl font-semibold text-accent-strong">{s.value}</dd>
             </div>
@@ -54,35 +55,49 @@ export function Process() {
     <section className="px-4 pb-20 sm:pb-24">
       <div className="mx-auto max-w-6xl">
         <Heading title={workflow.title} />
-        <div className="reveal parallax relative mt-8 aspect-[16/9] overflow-hidden rounded-3xl sm:aspect-[21/9]">
-          <Image src={workflow.image} alt="Merancang skema dan diagram rangkaian" fill sizes="(min-width: 1152px) 1152px, 100vw" className="object-cover" />
+        <div className="mt-10 grid gap-8 md:grid-cols-[1fr_1.3fr] md:items-start">
+          <div className="reveal parallax relative aspect-[4/5] overflow-hidden rounded-3xl md:sticky md:top-24">
+            <Image src={workflow.image} alt={workflow.imageAlt} fill sizes="(min-width: 768px) 45vw, 100vw" className="object-cover" />
+          </div>
+          <ol className="space-y-6">
+            {workflow.steps.map((step, i) => (
+              <li key={step.title} className="reveal-item flex gap-5 rounded-3xl bg-card p-4 sm:p-5">
+                <div className="relative aspect-square w-24 shrink-0 overflow-hidden rounded-2xl sm:w-32">
+                  <Image src={step.image} alt={step.alt} fill sizes="128px" className="object-cover" />
+                </div>
+                <div>
+                  <span className="font-display text-2xl text-accent-strong">{String(i + 1).padStart(2, "0")}</span>
+                  <h3 className="mt-1 font-semibold">{step.title}</h3>
+                  <p className="mt-1.5 text-sm leading-relaxed text-muted">{step.text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </div>
-        <ol className="mt-10 grid gap-8 sm:grid-cols-3">
-          {workflow.steps.map((step, i) => (
-            <li key={step.title} className="reveal border-t border-line pt-5">
-              <span className="font-display text-2xl text-accent-strong">{String(i + 1).padStart(2, "0")}</span>
-              <h3 className="mt-2 font-semibold">{step.title}</h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-muted">{step.text}</p>
-            </li>
-          ))}
-        </ol>
       </div>
     </section>
   )
 }
 
 export function Tools() {
+  // Two identical lists side by side; the track slides -50% (one list) and loops seamlessly.
+  const list = (hidden?: boolean) => (
+    <ul aria-hidden={hidden} className="flex shrink-0 items-center gap-12 pr-12">
+      {tools.map((t) => (
+        <li key={t} className="whitespace-nowrap font-display text-base font-semibold tracking-tight text-text/60 sm:text-lg">
+          {t}
+        </li>
+      ))}
+    </ul>
+  )
   return (
-    <section aria-labelledby="tools-title" className="bg-paper-2 px-4 py-14">
-      <div className="mx-auto max-w-6xl text-center">
-        <h2 id="tools-title" className="text-lg font-medium">Tools & Platform yang Saya Gunakan</h2>
-        <ul className="mt-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
-          {tools.map((t) => (
-            <li key={t} className="font-display text-base font-semibold tracking-tight text-text/60 sm:text-lg">
-              {t}
-            </li>
-          ))}
-        </ul>
+    <section aria-labelledby="tools-title" className="bg-paper-2 py-14">
+      <h2 id="tools-title" className="px-4 text-center text-lg font-medium">Tools & Platform yang Saya Gunakan</h2>
+      <div className="group mt-6 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]">
+        <div className="flex w-max animate-[marquee_35s_linear_infinite] group-hover:[animation-play-state:paused]">
+          {list()}
+          {list(true)}
+        </div>
       </div>
     </section>
   )
@@ -107,7 +122,7 @@ export function Services() {
             return (
               <li
                 key={s.title}
-                className={`reveal group flex min-h-64 flex-col rounded-3xl p-6 transition-colors ${
+                className={`reveal-item group flex min-h-64 flex-col rounded-3xl p-6 transition-colors ${
                   featured ? "bg-accent-strong text-white" : "bg-card hover:bg-white"
                 }`}
               >
@@ -131,24 +146,29 @@ export function Projects() {
       <div className="mx-auto max-w-6xl">
         <Heading title="Explore project dan karya terbaru saya" />
         <ul className="mt-10 grid gap-4 md:grid-cols-2">
-          {projects.map((p, i) => (
+          {projects.map((p, i) => {
+            const wide = i === 0 || (i === projects.length - 1 && i % 2 === 1)
+            return (
             <li
               key={p.title}
-              className={`reveal group relative overflow-hidden rounded-3xl bg-ink text-white ${
-                i === 0 ? "aspect-[4/5] sm:aspect-[16/9] md:col-span-2 md:aspect-[21/9]" : "aspect-[4/5] sm:aspect-[4/3]"
+              className={`reveal-item group relative overflow-hidden rounded-3xl bg-ink text-white ${
+                wide
+                  ? "aspect-[4/5] sm:aspect-[16/9] md:col-span-2 md:aspect-[21/9]"
+                  : "aspect-[4/5] sm:aspect-[4/3]"
               }`}
             >
               <Image
                 src={p.image}
                 alt={p.title}
                 fill
-                sizes={i === 0 ? "(min-width: 1152px) 1152px, 100vw" : "(min-width: 768px) 50vw, 100vw"}
+                sizes={wide ? "(min-width: 1152px) 1152px, 100vw" : "(min-width: 768px) 50vw, 100vw"}
                 className="object-cover opacity-80 transition-transform duration-500 group-hover:scale-[1.03]"
+                style={p.focus ? { objectPosition: p.focus } : undefined}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-5 sm:p-7">
                 <p className="text-xs text-white/70">
-                  {p.category} · {p.year}
+                  {p.year ? `${p.category} · ${p.year}` : p.category}
                 </p>
                 <h3 className="mt-1 font-display text-lg font-medium sm:text-xl">{p.title}</h3>
                 <p className="mt-2 max-w-xl text-sm leading-relaxed text-white/80">{p.summary}</p>
@@ -176,7 +196,8 @@ export function Projects() {
                 </div>
               </div>
             </li>
-          ))}
+            )
+          })}
         </ul>
       </div>
     </section>
@@ -193,7 +214,7 @@ export function Experience() {
         </p>
         <ul className="mt-10 grid gap-5 md:grid-cols-3">
           {experience.map((e) => (
-            <li key={e.title} className="reveal overflow-hidden rounded-3xl bg-card">
+            <li key={e.title} className="reveal-item overflow-hidden rounded-3xl bg-card">
               <div className="relative aspect-[16/10]">
                 <Image src={e.image} alt="" fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover" />
               </div>
@@ -214,12 +235,12 @@ export function Experience() {
 export function Credentials() {
   return (
     <section className="px-4 pb-20 sm:pb-24">
-      <div className="glow-ink -mx-4 px-4 pb-40 pt-16 text-white sm:pt-20">
+      <div className="reveal-band glow-ink -mx-4 px-4 pb-40 pt-16 text-white sm:pt-20">
         <div className="mx-auto max-w-6xl text-center">
-          <p className="reveal font-display text-[clamp(1.3rem,3vw,2rem)] font-medium leading-tight">
+          <p className="font-display text-[clamp(1.3rem,3vw,2rem)] font-medium leading-tight">
             Mari wujudkan sistem yang andal bersama.
           </p>
-          <a href="#contact" className="reveal mt-6 inline-flex h-12 items-center rounded-full bg-accent-strong px-6 text-sm font-semibold hover:bg-accent">
+          <a href="#contact" className="mt-6 inline-flex h-12 items-center rounded-full bg-accent-strong px-6 text-sm font-semibold hover:bg-accent">
             Hubungi Saya
           </a>
         </div>
@@ -234,7 +255,7 @@ export function Credentials() {
               return (
                 <li
                   key={c.title}
-                  className={`reveal flex flex-col rounded-3xl p-6 ${featured ? "bg-ink text-white md:py-10" : "bg-card"}`}
+                  className={`reveal-item reveal-scale flex flex-col rounded-3xl p-6 ${featured ? "bg-ink text-white md:py-10" : "bg-card"}`}
                 >
                   <ul className="space-y-2.5">
                     {c.items.map((it) => (
@@ -265,18 +286,48 @@ export function Faq() {
       <div className="mx-auto max-w-3xl">
         <Heading title="Pertanyaan yang sering diajukan recruiter" center />
         <div className="mt-10 space-y-3">
-          {faqs.map((f) => (
-            <details key={f.q} className="reveal group rounded-2xl bg-card px-5 open:bg-white">
+          {faqs.map((f, i) => (
+            <details key={f.q} open={i === 0} className="reveal-item group rounded-2xl bg-card px-5 transition-colors open:bg-ink open:text-white">
               <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-4 text-sm font-semibold [&::-webkit-details-marker]:hidden">
                 {f.q}
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-ink text-white transition-transform group-open:rotate-180">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-ink text-white transition-transform group-open:rotate-180 group-open:bg-accent-strong">
                   <ChevronDown size={15} aria-hidden="true" />
                 </span>
               </summary>
-              <p className="pb-5 text-sm leading-relaxed text-muted">{f.a}</p>
+              <p className="pb-5 text-sm leading-relaxed text-muted group-open:text-white/75">{f.a}</p>
             </details>
           ))}
         </div>
+      </div>
+    </section>
+  )
+}
+
+export function Gallery() {
+  return (
+    <section aria-labelledby="gallery-title" className="px-4 py-20 sm:py-24">
+      <div className="mx-auto max-w-6xl">
+        <h2 id="gallery-title" className="reveal font-display text-[clamp(1.35rem,3vw,2.1rem)] font-medium leading-tight tracking-tight">
+          Dokumentasi & pencapaian
+        </h2>
+        <ul className="mt-10 grid auto-rows-[220px] grid-cols-2 gap-4 md:grid-cols-4">
+          {gallery.map((g, i) => (
+            <li
+              key={g.caption}
+              className={`reveal-item group relative overflow-hidden rounded-3xl bg-ink ${i === 0 ? "col-span-2 row-span-2" : ""}`}
+            >
+              <Image
+                src={g.image}
+                alt={g.caption}
+                fill
+                sizes={i === 0 ? "(min-width: 768px) 50vw, 100vw" : "(min-width: 768px) 25vw, 50vw"}
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+              <p className="absolute inset-x-0 bottom-0 p-4 text-xs font-medium text-white sm:text-sm">{g.caption}</p>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   )

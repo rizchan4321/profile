@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from "react"
-import { Menu, X, Search, Zap } from "lucide-react"
+import { Menu, X, Search } from "lucide-react"
 import { navLinks, profile } from "@/lib/content"
 
 function openPalette() {
@@ -28,11 +28,9 @@ export function Navbar() {
   return (
     <nav className="fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-ink/90 text-white backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-        <a href="#top" className="flex items-center gap-2 font-display text-sm font-semibold">
-          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-accent-strong">
-            <Zap size={16} aria-hidden="true" />
-          </span>
-          {profile.shortName}.
+        <a href="#top" aria-label={`${profile.name} — kembali ke atas`} className="flex items-center">
+          {/* eslint-disable-next-line @next/next/no-img-element -- tiny static logo; next/image adds nothing here */}
+          <img src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/logo-mr.png`} alt="Logo MR" width={64} height={40} className="h-9 w-auto" />
         </a>
 
         <div className="hidden items-center gap-1 md:flex">

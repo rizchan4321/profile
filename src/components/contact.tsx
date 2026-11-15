@@ -178,7 +178,7 @@ export function Contact() {
         </form>
       </div>
 
-      <footer className="mx-auto mt-20 flex max-w-6xl flex-col gap-4 border-t border-white/10 pt-6 text-xs text-white/60 sm:flex-row sm:items-center sm:justify-between">
+      <footer className="reveal mx-auto mt-20 flex max-w-6xl flex-col gap-4 border-t border-white/10 pt-6 text-xs text-white/60 sm:flex-row sm:items-center sm:justify-between">
         <ul className="flex flex-wrap gap-x-5 gap-y-2">
           {navLinks.map((l) => (
             <li key={l.name}>
