@@ -1,10 +1,8 @@
 "use client"
 
-import React, { useState, useEffect } from "react"
-import Link from "next/link"
-import { ThemeToggle } from "./theme-toggle"
-import { Menu, X, Search } from "lucide-react"
-import { navLinks } from "@/lib/content"
+import React, { useEffect, useState } from "react"
+import { Menu, X, Search, Zap } from "lucide-react"
+import { navLinks, profile } from "@/lib/content"
 
 function openPalette() {
   window.dispatchEvent(new Event("open-command-palette"))
@@ -12,130 +10,90 @@ function openPalette() {
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-  const [active, setActive] = useState<string>("")
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20)
-    handleScroll()
-    window.addEventListener("scroll", handleScroll, { passive: true })
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+  const [active, setActive] = useState("#top")
 
   // Scroll-spy: highlight the nav item for the section in view.
   useEffect(() => {
     const sections = navLinks
       .map((l) => document.querySelector(l.href))
       .filter((el): el is Element => el !== null)
-
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActive(`#${entry.target.id}`)
-        })
-      },
+      (entries) => entries.forEach((e) => e.isIntersecting && setActive(`#${e.target.id}`)),
       { rootMargin: "-45% 0px -50% 0px" }
     )
-
     sections.forEach((s) => observer.observe(s))
     return () => observer.disconnect()
   }, [])
 
   return (
-    <nav
-      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
-        scrolled
-          ? "border-b border-border bg-background/80 backdrop-blur-md"
-          : "border-b border-transparent bg-transparent"
-      }`}
-    >
-      <div className="mx-auto max-w-5xl px-4 sm:px-6">
-        <div className="flex h-16 items-center justify-between">
-          <Link
-            href="#top"
-            className="font-mono text-lg font-bold tracking-tight"
-            aria-label="Back to top"
+    <nav className="fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-ink/90 text-white backdrop-blur-md">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
+        <a href="#top" className="flex items-center gap-2 font-display text-sm font-semibold">
+          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-accent-strong">
+            <Zap size={16} aria-hidden="true" />
+          </span>
+          {profile.shortName}.
+        </a>
+
+        <div className="hidden items-center gap-1 md:flex">
+          {navLinks.map((link) => (
+            <a
+              key={link.name}
+              href={link.href}
+              aria-current={active === link.href ? "true" : undefined}
+              className={`rounded-full px-3 py-2 text-[13px] transition-colors ${
+                active === link.href ? "text-white" : "text-on-ink-muted hover:text-white"
+              }`}
+            >
+              {link.name}
+            </a>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-1">
+          <button
+            onClick={openPalette}
+            aria-label="Open command palette"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full text-on-ink-muted transition-colors hover:text-white"
           >
-            MRR<span className="text-accent-bright">_</span>
-          </Link>
-
-          {/* Desktop nav */}
-          <div className="hidden items-center gap-1 md:flex">
-            {navLinks.map((link) => {
-              const isActive = active === link.href
-              return (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  aria-current={isActive ? "true" : undefined}
-                  className={`group flex items-center gap-1.5 rounded-md px-3 py-2 font-mono text-xs transition-colors ${
-                    isActive
-                      ? "text-foreground"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  <span
-                    className={
-                      isActive ? "text-accent" : "text-border-strong group-hover:text-accent"
-                    }
-                  >
-                    {link.code}
-                  </span>
-                  {link.name}
-                </Link>
-              )
-            })}
-            <button
-              onClick={openPalette}
-              aria-label="Open command palette"
-              className="ml-2 inline-flex h-9 items-center gap-2 rounded-md border border-border bg-surface/50 px-2.5 font-mono text-xs text-muted-foreground transition-colors hover:border-accent-bright hover:text-foreground"
-            >
-              <Search size={13} />
-              <kbd className="rounded bg-background px-1.5 py-0.5 text-[10px]">⌘K</kbd>
-            </button>
-            <div className="ml-1">
-              <ThemeToggle />
-            </div>
-          </div>
-
-          {/* Mobile toggle */}
-          <div className="flex items-center gap-1 md:hidden">
-            <button
-              onClick={openPalette}
-              aria-label="Open command palette"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-md text-muted-foreground"
-            >
-              <Search size={18} />
-            </button>
-            <ThemeToggle />
-            <button
-              onClick={() => setIsOpen((o) => !o)}
-              className="inline-flex h-11 w-11 items-center justify-center rounded-md"
-              aria-label="Toggle menu"
-              aria-expanded={isOpen}
-            >
-              {isOpen ? <X size={20} /> : <Menu size={20} />}
-            </button>
-          </div>
+            <Search size={17} />
+          </button>
+          <a
+            href="#contact"
+            className="hidden h-10 items-center rounded-full bg-accent-strong px-5 text-[13px] font-semibold transition-colors hover:bg-accent md:inline-flex"
+          >
+            Hubungi Saya
+          </a>
+          <button
+            onClick={() => setIsOpen((o) => !o)}
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full md:hidden"
+            aria-label="Toggle menu"
+            aria-expanded={isOpen}
+          >
+            {isOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
         </div>
       </div>
 
-      {/* Mobile menu */}
       {isOpen && (
-        <div className="border-b border-border bg-background md:hidden">
-          <div className="space-y-1 px-4 py-3">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                onClick={() => setIsOpen(false)}
-                className="flex items-center gap-2.5 rounded-md px-3 py-2.5 font-mono text-sm hover:bg-surface-2"
-              >
-                <span className="text-accent">{link.code}</span>
-                {link.name}
-              </Link>
-            ))}
-          </div>
+        <div className="border-t border-white/5 px-4 py-3 md:hidden">
+          {navLinks.map((link) => (
+            <a
+              key={link.name}
+              href={link.href}
+              onClick={() => setIsOpen(false)}
+              className="block rounded-lg px-3 py-3 text-sm text-white/85 hover:bg-white/5"
+            >
+              {link.name}
+            </a>
+          ))}
+          <a
+            href="#contact"
+            onClick={() => setIsOpen(false)}
+            className="mt-2 flex h-11 items-center justify-center rounded-full bg-accent-strong text-sm font-semibold"
+          >
+            Hubungi Saya
+          </a>
         </div>
       )}
     </nav>

@@ -1,137 +1,187 @@
-// Single source of truth for portfolio content.
-// NOTE: Links (github/demo) and screenshots are intentionally left empty where
-// not confirmed â€” fill them in rather than inventing URLs.
+// Single source of truth for portfolio content (synced with CV, Nov 2026).
+// Stock photos in /public/images are from Unsplash (free license) — swap for real
+// photos of your own work when available.
 
 export const profile = {
   name: "Muhammad Rizki Rahmadhan",
+  shortName: "Rizki",
   role: "Electrical & Automation Engineer",
-  tagline: "electrical Â· ai Â· iot",
+  tagline: "Electrical · Automation · IoT",
   summary:
-    "D3 Electrical Engineering student at POLTEKBA bridging embedded systems, AI/ML, and modern web â€” building intelligent hardware and real-time monitoring systems.",
-  location: "Balikpapan, Kalimantan Timur, ID",
-  status: "Available for opportunities",
-  focus: "Embedded Â· AI Â· IoT",
-  email: "muhrizkirahmadhan@gmail.com",
+    "Lulusan D-III Teknik Elektronika POLTEKBA berpengalaman di electrical maintenance, troubleshooting, instalasi, dan sistem kontrol — dari panel 3 fasa dan PLC/HMI hingga IoT dan machine learning.",
+  location: "Balikpapan, Kalimantan Timur",
+  email: "Rizkirmdan7890@gmail.com",
+  heroImage: "/images/hero-hands-pcb.jpg",
   links: {
     github: "https://github.com/rizchan4321",
-    linkedin: "www.linkedin.com/in/rizkirmdan",
+    linkedin: "https://www.linkedin.com/in/rizkirmdan/",
   },
-} as const;
+} as const
 
-export const about = {
-  paragraphs: [
-    "Saya mahasiswa D3 Teknik Elektronika di Politeknik Negeri Balikpapan (POLTEKBA) dengan antusiasme tinggi pada integrasi sistem â€” menggabungkan perangkat keras dan kecerdasan buatan menjadi solusi yang benar-benar berjalan.",
-    "Berlatar sistem tertanam dan otomatisasi, saya memperluas keahlian ke pengembangan web modern untuk membangun dashboard monitoring real-time yang intuitif dan andal.",
+export const heroTags = ["PLC & HMI", "Motor 3 Fasa", "IoT", "Machine Learning"] as const
+
+export const intro = {
+  title: "Membangun sistem kelistrikan yang andal dan cerdas untuk industri",
+  image: "/images/lab.jpg",
+  card: {
+    title: "Siap Bekerja di Industri",
+    text: "Pengalaman lapangan di Pertamina Hulu Mahakam, PT Trakindo Utama, dan instalasi tenaga listrik — dengan prosedur keselamatan kerja sebagai prioritas.",
+  },
+  stats: [
+    { value: "3,68", label: "IPK D-III Teknik Elektronika" },
+    { value: "3+", label: "Penempatan industri & magang" },
+    { value: "#2", label: "IoT — KMIPN VIII 2026" },
   ],
-  meta: [
-    { label: "LOCATION", value: profile.location },
-    { label: "TARGET", value: "PT Evans Indonesia / PT Pertamina" },
-    { label: "FOCUS", value: profile.focus },
+} as const
+
+export const process = {
+  title: "Cara saya bekerja",
+  image: "/images/schematic.jpg",
+  steps: [
+    { title: "Analisis & Diagram", text: "Membaca diagram kelistrikan, analisis dasar, dan menemukan akar masalah peralatan." },
+    { title: "Instalasi & Integrasi", text: "Panel 3 fasa, PLC Schneider/Omron, HMI Haiwell, VSD, hingga perangkat IoT." },
+    { title: "Maintenance & Improvement", text: "Preventive maintenance dan continuous improvement untuk menjaga keandalan." },
   ],
-  highlights: [
-    { code: "HW", title: "Embedded Systems", detail: "ESP32, Arduino, PLC/HMI Schneider" },
-    { code: "AI", title: "AI & Machine Learning", detail: "MediaPipe, YOLOv8, CNN, TinyML" },
-    { code: "WEB", title: "Web Development", detail: "React, Next.js, Laravel, Tailwind" },
-    { code: "CERT", title: "Certifications", detail: "Jr. Mobile & Web Dev, Power Installation" },
-  ],
-} as const;
+} as const
 
-export const skillGroups = [
-  {
-    code: "01",
-    title: "Hardware & Automation",
-    items: ["ESP32", "Arduino", "PLC Schneider", "HMI", "Sensor Integration", "Wearable Tech", "Sistem Elektrikal"],
-  },
-  {
-    code: "02",
-    title: "AI & IoT",
-    items: ["MediaPipe", "YOLOv8", "CNN", "TinyML", "Q-Learning", "Fuzzy Logic", "Real-time Monitoring"],
-  },
-  {
-    code: "03",
-    title: "Software Development",
-    items: ["React.js", "Next.js", "Laravel", "Tailwind CSS", "GSAP", "Python", "Figma"],
-  },
-] as const;
+// Wordmarks shown in the "tools" strip (plain text, not official logos).
+export const tools = ["Schneider PLC", "Omron", "Haiwell HMI", "ESP32", "Python", "Next.js"] as const
 
-export const experience = [
+export const services = [
   {
-    period: "2025 â€” Present",
-    title: "EPT POS (Point of Sale)",
-    company: "PT Excelindo Perkasa Teknik",
-    desc: "Developing and maintaining a robust POS system for internal operations â€” inventory management and real-time transaction tracking.",
+    title: "Electrical Installation & Maintenance",
+    text: "Instalasi panel listrik 3 fasa, kubikel, meteran ≥33.000 VA, protection system, dan pemeliharaan instalasi.",
   },
   {
-    period: "2024",
-    title: "POS System Development",
-    company: "UMKM Ayam Geprek Saly",
-    desc: "Custom POS solution for a local business to streamline sales, financial reporting, and order management.",
+    title: "PLC, HMI & Automation",
+    text: "Pemrograman PLC Schneider & Omron, HMI Haiwell, VSD/inverter, dan pengujian motor 3 fasa.",
   },
   {
-    period: "2023 â€” 2024",
-    title: "Koordinator Divisi IPTEK",
-    company: "HMJ RE â€” POLTEKBA",
-    desc: "Organized technology events and workshops, fostering innovation among Electrical Engineering students.",
+    title: "IoT & Machine Learning",
+    text: "Perangkat IoT berbasis ESP32 dan sistem AI seperti MediaPipe + CNN untuk monitoring real-time.",
   },
-] as const;
+  {
+    title: "Web & Mobile Development",
+    text: "Dashboard monitoring dan aplikasi bisnis dengan Next.js, Laravel, dan mobile programming (BNSP).",
+  },
+] as const
 
-export type ProjectStatus = "DEPLOYED" | "RESEARCH" | "FREELANCE";
-
-export interface Project {
-  id: string;
-  title: string;
-  status: ProjectStatus;
-  year: string;
-  summary: string;
-  stack: string[];
-  github?: string;
-  demo?: string;
-  download?: string;
-  downloadLabel?: string;
-  images: string[];
+export type Project = {
+  title: string
+  category: string
+  year: string
+  summary: string
+  stack: string[]
+  image: string
+  github?: string
+  demo?: string
+  download?: string
+  downloadLabel?: string
 }
 
 export const projects: Project[] = [
   {
-    id: "PRJ-001",
     title: "Pemantauan ADHD (Tugas Akhir)",
-    status: "RESEARCH",
+    category: "AI · Penelitian",
     year: "2026",
     summary:
-      "Estimasi tingkat fokus & emosi anak menggunakan MediaPipe Face Mesh + CNN (weighted late fusion) untuk analisis perilaku real-time.",
-    stack: ["MediaPipe", "CNN", "Python", "Deep Learning"],
+      "Estimasi tingkat fokus & emosi anak ADHD dengan MediaPipe Face Mesh, CNN, dan sensor multimodal di Yayasan Daeng Mappacing Balikpapan.",
+    stack: ["MediaPipe", "CNN", "Python", "Sensor Multimodal"],
+    image: "/projects/pemantauan-adhd.jpeg",
     github: "https://github.com/rizchan4321/yolo-ADHD",
-    download: "/downloads/PemantauanADHD-Setup-0.3.8.exe",
-    downloadLabel: "installer 0.3.8",
-    images: ["/projects/pemantauan-adhd.jpeg"],
+    download: "/downloads/PemantauanADHD-Setup-0.3.9.exe",
+    downloadLabel: "Installer 0.3.9",
   },
   {
-    id: "PRJ-002",
     title: "Instalasi Listrik & Otomasi",
-    status: "DEPLOYED",
+    category: "Electrical",
     year: "2025",
-    summary:
-      "Mengimplementasikan sistem instalasi listrik dan otomasi di sebuah fasilitas industri.",
-    stack: ["PLC", "grounding", "MCB", "HMI"],
-    images: [],
+    summary: "Implementasi instalasi listrik dan sistem otomasi di fasilitas industri.",
+    stack: ["PLC", "HMI", "MCB", "Grounding"],
+    image: "/images/electrician.jpg",
   },
   {
-    id: "PRJ-003",
     title: "Point of Sale System",
-    status: "FREELANCE",
+    category: "Web · Freelance",
     year: "2024",
-    summary:
-      "merancang dan membuat sistem point of sale untuk sebuah usaha lokal di ayam geprek saly.",
-    stack: ["bootstrap", "HTML/CSS", "JavaScript", "PHP", "MySQL"],
+    summary: "Sistem kasir untuk UMKM Ayam Geprek Saly: penjualan, laporan keuangan, dan pesanan.",
+    stack: ["PHP", "MySQL", "Bootstrap", "JavaScript"],
+    image: "/images/dashboard.jpg",
     demo: "https://bilgisa.id",
-    images: [],
   },
-];
+]
+
+export const experience = [
+  {
+    period: "Okt 2026 — Sekarang",
+    title: "Facility Maintenance",
+    company: "PT Aviako · PT Trakindo Utama",
+    image: "/images/site-work.jpg",
+    desc: "Maintenance sistem pendingin, pemasangan sensor limit crane Demag, pemeliharaan motor listrik, dan general facility maintenance.",
+  },
+  {
+    period: "Sep — Des 2025",
+    title: "Magang HVAC & WTP",
+    company: "PT Beasco Jaya Mandiri · Pertamina Hulu Mahakam",
+    image: "/images/industrial-motor.jpg",
+    desc: "Troubleshooting AC split/inverter/cassette, pengujian motor 3 fasa dengan PLC Schneider & HMI Haiwell, dan preventive maintenance.",
+  },
+  {
+    period: "Jul — Sep 2022",
+    title: "Magang Instalasi Tenaga Listrik",
+    company: "PT Nusa Jaya Mandiri",
+    image: "/images/circuit.jpg",
+    desc: "Troubleshooting kubikel termasuk penggantian CT, instalasi meteran ≥33.000 VA, dan pemeliharaan hingga penambahan daya.",
+  },
+] as const
+
+// Rendered in the 3-card "plan" layout; `featured` gets the orange card.
+export const credentials = [
+  {
+    label: "Sertifikasi BNSP",
+    title: "Junior Web & Mobile",
+    year: "2024 — 2025",
+    items: ["Junior Web Developer (2024)", "Junior Mobile Programmer (2025)", "LSP Teknologi Digital"],
+  },
+  {
+    label: "Prestasi",
+    title: "Juara 2 IoT",
+    year: "KMIPN VIII 2026",
+    featured: true,
+    items: ["Kategori Bisnis & Skalabilitas IoT", "Tim Rekayasa Tektrone — POLTEKBA", "Politeknik Negeri Ujung Pandang"],
+  },
+  {
+    label: "Sertifikasi LSP",
+    title: "Automation Maintenance",
+    year: "2026",
+    items: ["Junior Engineer — LSP POLTEKBA", "PKL Beasco: predikat Sangat Baik", "Prakerin NJM: predikat Sangat Puas"],
+  },
+] as const
+
+export const faqs = [
+  {
+    q: "Bidang apa yang paling Anda kuasai?",
+    a: "Electrical maintenance dan troubleshooting: panel 3 fasa, kubikel, motor listrik, PLC Schneider/Omron, HMI Haiwell, dan VSD.",
+  },
+  {
+    q: "Apa latar belakang pendidikan Anda?",
+    a: "D-III Teknik Elektronika, Politeknik Negeri Balikpapan (2023–2026, IPK 3,68) dan SMK Pangeran Antasari jurusan Teknik Instalasi Tenaga Listrik.",
+  },
+  {
+    q: "Apakah punya pengalaman di lingkungan industri?",
+    a: "Ya — facility maintenance di PT Trakindo Utama, magang HVAC & WTP di Pertamina Hulu Mahakam, dan instalasi tenaga listrik di PT Nusa Jaya Mandiri.",
+  },
+  {
+    q: "Selain elektrikal, apa lagi yang bisa Anda kerjakan?",
+    a: "Pengembangan perangkat IoT, machine learning (MediaPipe, CNN), serta web dan mobile — tersertifikasi BNSP.",
+  },
+] as const
 
 export const navLinks = [
-  { code: "01", name: "About", href: "#about" },
-  { code: "02", name: "Skills", href: "#skills" },
-  { code: "03", name: "Experience", href: "#experience" },
-  { code: "04", name: "Projects", href: "#projects" },
-  { code: "05", name: "Contact", href: "#contact" },
-] as const;
+  { name: "Home", href: "#top" },
+  { name: "About", href: "#about" },
+  { name: "Skills", href: "#skills" },
+  { name: "Projects", href: "#projects" },
+  { name: "Experience", href: "#experience" },
+  { name: "FAQ", href: "#faq" },
+] as const

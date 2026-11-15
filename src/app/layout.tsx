@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Unbounded } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
 import { profile } from "@/lib/content";
 
 const geistSans = Geist({
@@ -9,12 +8,13 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const display = Unbounded({
+  variable: "--font-display",
   subsets: ["latin"],
+  weight: ["500", "600", "700"],
 });
 
-const siteUrl = "https://rizkirahmadhan.dev";
+const siteUrl = "https://rizkirmdan.my.id";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -26,8 +26,8 @@ export const metadata: Metadata = {
   keywords: [
     "Muhammad Rizki Rahmadhan",
     "Electrical Engineering",
-    "Embedded Systems",
-    "AI/ML Engineer",
+    "Electrical Maintenance",
+    "PLC HMI",
     "IoT",
     "ESP32",
     "YOLOv8",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   creator: profile.name,
   openGraph: {
     type: "website",
-    locale: "en_US",
+    locale: "id_ID",
     url: siteUrl,
     title: `${profile.name} — ${profile.role}`,
     description: profile.summary,
@@ -53,10 +53,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fafaf7" },
-    { media: "(prefers-color-scheme: dark)", color: "#0a0a0b" },
-  ],
+  themeColor: "#111111",
 };
 
 const personJsonLd = {
@@ -72,8 +69,8 @@ const personJsonLd = {
     addressCountry: "ID",
   },
   knowsAbout: [
-    "Embedded Systems",
-    "Artificial Intelligence",
+    "Electrical Maintenance",
+    "PLC & HMI",
     "Machine Learning",
     "Internet of Things",
     "Web Development",
@@ -86,19 +83,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        suppressHydrationWarning
-        className={`${geistSans.variable} ${geistMono.variable} min-h-dvh bg-background text-foreground`}
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
+    <html lang="id">
+      <body className={`${geistSans.variable} ${display.variable} min-h-dvh`}>
+        {children}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}

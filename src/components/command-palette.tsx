@@ -1,13 +1,10 @@
 "use client"
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { useTheme } from "next-themes"
 import {
   Search,
   CornerDownLeft,
-  ArrowUp,
-  Moon,
-  Sun,
+  Hash,
   Mail,
   Copy,
   Check,
@@ -35,7 +32,6 @@ export function CommandPalette() {
   const [copied, setCopied] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const restoreRef = useRef<HTMLElement | null>(null)
-  const { theme, setTheme, resolvedTheme } = useTheme()
 
   const close = useCallback(() => {
     setOpen(false)
@@ -61,34 +57,16 @@ export function CommandPalette() {
 
   const commands = useMemo<Command[]>(() => {
     const nav: Command[] = navLinks.map((l) => ({
-      id: `nav-${l.code}`,
+      id: `nav-${l.name}`,
       label: l.name,
-      hint: `Jump to section ${l.code}`,
+      hint: "Jump to section",
       group: "Navigation",
-      keywords: `${l.name} ${l.code} section goto`,
-      icon: <span className="font-mono text-xs text-accent">{l.code}</span>,
+      keywords: `${l.name} section goto`,
+      icon: <Hash size={16} />,
       perform: () => go(l.href),
     }))
 
     const actions: Command[] = [
-      {
-        id: "top",
-        label: "Back to top",
-        hint: "Scroll to hero",
-        group: "Navigation",
-        keywords: "top home hero start",
-        icon: <ArrowUp size={16} />,
-        perform: () => go("#top"),
-      },
-      {
-        id: "theme",
-        label: `Switch to ${resolvedTheme === "dark" ? "light" : "dark"} theme`,
-        hint: "Toggle appearance",
-        group: "Actions",
-        keywords: "theme dark light mode toggle appearance",
-        icon: resolvedTheme === "dark" ? <Sun size={16} /> : <Moon size={16} />,
-        perform: () => setTheme(theme === "dark" ? "light" : "dark"),
-      },
       {
         id: "email",
         label: "Email me",
@@ -136,7 +114,7 @@ export function CommandPalette() {
     ]
 
     return [...nav, ...actions]
-  }, [go, setTheme, theme, resolvedTheme, copied])
+  }, [go, copied])
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -231,10 +209,10 @@ export function CommandPalette() {
         onClick={close}
       />
 
-      <div className="relative w-full max-w-lg overflow-hidden rounded-xl border border-border-strong bg-surface shadow-2xl shadow-black/40 motion-safe:animate-[cmdk-pop_0.18s_ease-out]">
+      <div className="relative w-full max-w-lg overflow-hidden rounded-xl border border-white/15 bg-ink-2 text-white shadow-2xl shadow-black/40 motion-safe:animate-[cmdk-pop_0.18s_ease-out]">
         {/* Input */}
-        <div className="flex items-center gap-3 border-b border-border px-4">
-          <Search size={16} className="shrink-0 text-muted-foreground" />
+        <div className="flex items-center gap-3 border-b border-white/10 px-4">
+          <Search size={16} className="shrink-0 text-on-ink-muted" />
           <input
             ref={inputRef}
             value={query}
@@ -248,9 +226,9 @@ export function CommandPalette() {
             aria-controls="cmdk-list"
             aria-activedescendant={filtered[safeActive] ? `cmdk-${filtered[safeActive].id}` : undefined}
             placeholder="Search sections & actions…"
-            className="h-12 w-full bg-transparent font-mono text-sm outline-none placeholder:text-muted-foreground"
+            className="h-12 w-full bg-transparent font-mono text-sm outline-none placeholder:text-on-ink-muted"
           />
-          <kbd className="hidden shrink-0 rounded border border-border bg-background px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground sm:block">
+          <kbd className="hidden shrink-0 rounded border border-white/10 bg-ink px-1.5 py-0.5 font-mono text-[10px] text-on-ink-muted sm:block">
             ESC
           </kbd>
         </div>
@@ -258,7 +236,7 @@ export function CommandPalette() {
         {/* List */}
         <ul id="cmdk-list" role="listbox" className="max-h-[50vh] overflow-y-auto p-1.5">
           {filtered.length === 0 && (
-            <li className="px-3 py-6 text-center font-mono text-xs text-muted-foreground">
+            <li className="px-3 py-6 text-center font-mono text-xs text-on-ink-muted">
               No results for &ldquo;{query}&rdquo;
             </li>
           )}
@@ -268,7 +246,7 @@ export function CommandPalette() {
             return (
               <React.Fragment key={cmd.id}>
                 {showGroup && (
-                  <li className="px-3 pb-1 pt-2 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+                  <li className="px-3 pb-1 pt-2 font-mono text-[10px] uppercase tracking-[0.2em] text-on-ink-muted">
                     {cmd.group}
                   </li>
                 )}
@@ -279,14 +257,14 @@ export function CommandPalette() {
                   onMouseEnter={() => setActive(i)}
                   onClick={() => run(cmd)}
                   className={`flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm ${
-                    i === safeActive ? "bg-accent-soft text-foreground" : "text-foreground/80"
+                    i === safeActive ? "bg-white/10 text-white" : "text-white/80"
                   }`}
                 >
-                  <span className="flex h-5 w-5 shrink-0 items-center justify-center text-muted-foreground">
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center text-on-ink-muted">
                     {cmd.icon}
                   </span>
                   <span className="flex-1 truncate">{cmd.label}</span>
-                  <span className="truncate font-mono text-[11px] text-muted-foreground">
+                  <span className="truncate font-mono text-[11px] text-on-ink-muted">
                     {cmd.hint}
                   </span>
                   {i === safeActive && (
