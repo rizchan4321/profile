@@ -28,7 +28,7 @@ export function Navbar() {
   return (
     <nav className="fixed inset-x-0 top-0 z-50 border-b border-white/5 bg-ink/90 text-white backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-        <a href="#top" aria-label={`${profile.name} — kembali ke atas`} className="flex items-center">
+        <a href="#top" aria-label="Kembali ke atas" className="flex items-center">
           {/* eslint-disable-next-line @next/next/no-img-element -- tiny static logo; next/image adds nothing here */}
           <img src={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/logo-mr.png`} alt="Logo MR" width={64} height={40} className="h-9 w-auto" />
         </a>
@@ -58,7 +58,7 @@ export function Navbar() {
           </button>
           <a
             href="#contact"
-            className="hidden h-10 items-center rounded-full bg-accent-strong px-5 text-[13px] font-semibold transition-colors hover:bg-accent md:inline-flex"
+            className="hidden h-10 items-center rounded-full bg-accent-strong px-5 text-[13px] font-semibold transition-colors hover:bg-accent-hover md:inline-flex"
           >
             Hubungi Saya
           </a>

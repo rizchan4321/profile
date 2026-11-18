@@ -46,7 +46,7 @@ export function Contact() {
       return
     }
     const subject = values.subject || `Pesan dari ${values.name} (portfolio)`
-    const body = `${values.message}\n\n— ${values.name} (${values.email})`
+    const body = `${values.message}\n\nDari: ${values.name} (${values.email})`
     window.location.href = `mailto:${profile.email}?subject=${encodeURIComponent(
       subject
     )}&body=${encodeURIComponent(body)}`
@@ -106,7 +106,7 @@ export function Contact() {
                     target={href.startsWith("mailto:") ? undefined : "_blank"}
                     rel="noopener noreferrer"
                     aria-label={label}
-                    className="flex h-11 w-11 items-center justify-center rounded-full bg-accent-strong transition-colors hover:bg-accent"
+                    className="flex h-11 w-11 items-center justify-center rounded-full bg-accent-strong transition-colors hover:bg-accent-hover"
                   >
                     <Icon size={18} />
                   </a>
@@ -167,7 +167,7 @@ export function Contact() {
 
           <button
             type="submit"
-            className="inline-flex h-12 w-full items-center justify-center rounded-full bg-accent-strong font-semibold transition-colors hover:bg-accent"
+            className="inline-flex h-12 w-full items-center justify-center rounded-full bg-accent-strong font-semibold transition-colors hover:bg-accent-hover"
           >
             Kirim Pesan
           </button>
@@ -182,7 +182,7 @@ export function Contact() {
         <ul className="flex flex-wrap gap-x-5 gap-y-2">
           {navLinks.map((l) => (
             <li key={l.name}>
-              <a href={l.href} className="hover:text-white">
+              <a href={l.href} className="inline-flex min-h-11 items-center hover:text-white">
                 {l.name}
               </a>
             </li>

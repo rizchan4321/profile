@@ -213,7 +213,7 @@ export function CommandPalette() {
 
       <div className="relative w-full max-w-lg overflow-hidden rounded-xl border border-white/15 bg-ink-2 text-white shadow-2xl shadow-black/40 motion-safe:animate-[cmdk-pop_0.18s_ease-out]">
         {/* Input */}
-        <div className="flex items-center gap-3 border-b border-white/10 px-4">
+        <div className="flex items-center gap-3 border-b border-white/10 px-4 focus-within:ring-2 focus-within:ring-inset focus-within:ring-accent">
           <Search size={16} className="shrink-0 text-on-ink-muted" />
           <input
             ref={inputRef}

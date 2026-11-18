@@ -11,9 +11,9 @@ export const profile = {
   role: "Electrical & Automation Engineer",
   tagline: "Electrical · Automation · IoT",
   summary:
-    "Lulusan D-III Teknik Elektronika POLTEKBA berpengalaman di electrical maintenance, troubleshooting, instalasi, dan sistem kontrol — dari panel 3 fasa dan PLC/HMI hingga IoT dan machine learning.",
+    "Lulusan D-III Teknik Elektronika POLTEKBA berpengalaman di electrical maintenance, troubleshooting, instalasi, dan sistem kontrol: dari panel 3 fasa dan PLC/HMI hingga IoT dan machine learning.",
   location: "Balikpapan, Kalimantan Timur",
-  email: "Rizkirmdan7890@gmail.com",
+  email: "rizkirmdan7890@gmail.com",
   title: "A.Md.T",
   photo: base + "/images/rizki.png",
   links: {
@@ -40,12 +40,12 @@ export const intro = {
   imageAlt: "Foto bersama tim magang di PT Beasco Jaya Mandiri",
   card: {
     title: "Siap Bekerja di Industri",
-    text: "Pengalaman lapangan di Pertamina Hulu Mahakam, PT Trakindo Utama, dan instalasi tenaga listrik — dengan prosedur keselamatan kerja sebagai prioritas.",
+    text: "Pengalaman lapangan di Pertamina Hulu Mahakam, PT Trakindo Utama, dan instalasi tenaga listrik, dengan prosedur keselamatan kerja sebagai prioritas.",
   },
   stats: [
     { value: "3,68", label: "IPK D-III Teknik Elektronika" },
     { value: "3+", label: "Penempatan industri & magang" },
-    { value: "#2", label: "IoT — KMIPN VIII 2026" },
+    { value: "#2", label: "IoT, KMIPN VIII 2026" },
   ],
 } as const
 
@@ -93,7 +93,7 @@ export const tools = [
 export const services = [
   {
     title: "Electrical Installation & Maintenance",
-    text: "Instalasi panel listrik 3 fasa, kubikel, meteran ≥33.000 VA, protection system, dan pemeliharaan instalasi.",
+    text: "Instalasi panel listrik 3 fasa, protection system, dan pemeliharaan instalasi.",
   },
   {
     title: "PLC, HMI & Automation",
@@ -118,6 +118,8 @@ export type Project = {
   image: string
   /** CSS object-position for cropping portrait photos into wide tiles. */
   focus?: string
+  /** On phones, show the whole photo above the text instead of a cropped background. */
+  fullImage?: boolean
   github?: string
   demo?: string
   download?: string
@@ -162,6 +164,7 @@ export const projects: Project[] = [
     summary: "Penerapan pengenalan wajah menggunakan library dlib dengan Python.",
     stack: ["Python", "dlib", "Computer Vision"],
     image: base + "/images/real/face-recognition-dlib.jpg",
+    fullImage: true,
   },
   {
     title: "Prototipe Alat Pemadam Api Berbasis Fuzzy",
@@ -184,6 +187,7 @@ export const projects: Project[] = [
       "Program Kemitraan Berdikari: meningkatkan produktivitas budidaya ikan lele dengan alat pencacah pakan bertenaga surya, didukung LPDP dan POLTEKBA.",
     stack: ["Tenaga Surya", "Motor Listrik", "Pemberdayaan UMKM"],
     image: base + "/images/real/kemitraan-banner.jpg",
+    fullImage: true,
   },
   {
     title: "Point of Sale System",
@@ -192,27 +196,27 @@ export const projects: Project[] = [
     summary: "Sistem kasir untuk UMKM Ayam Geprek Saly: penjualan, laporan keuangan, dan pesanan.",
     stack: ["PHP", "MySQL", "Bootstrap", "JavaScript"],
     image: base + "/images/dashboard.jpg",
-    demo: "https://bilgisa.id",
+    fullImage: true,
   },
 ]
 
 export const experience = [
   {
-    period: "Okt 2026 — Sekarang",
+    period: "Okt 2026 – Sekarang",
     title: "Facility Maintenance",
     company: "PT Aviako · PT Trakindo Utama",
     image: base + "/images/site-work.jpg",
     desc: "Maintenance sistem pendingin, pemasangan sensor limit crane Demag, pemeliharaan motor listrik, dan general facility maintenance.",
   },
   {
-    period: "Sep — Des 2025",
+    period: "Sep – Des 2025",
     title: "Magang HVAC & WTP",
     company: "PT Beasco Jaya Mandiri · Pertamina Hulu Mahakam",
     image: base + "/images/real/troubleshooting-ac-split.jpg",
     desc: "Troubleshooting AC split/inverter/cassette, pengujian motor 3 fasa dengan PLC Schneider & HMI Haiwell, dan preventive maintenance.",
   },
   {
-    period: "Jul — Sep 2022",
+    period: "Jul – Sep 2022",
     title: "Magang Instalasi Tenaga Listrik",
     company: "PT Nusa Jaya Mandiri",
     image: base + "/images/circuit.jpg",
@@ -225,7 +229,7 @@ export const credentials = [
   {
     label: "Sertifikasi BNSP",
     title: "Junior Web & Mobile",
-    year: "2024 — 2025",
+    year: "2024 – 2025",
     items: ["Junior Web Developer (2024)", "Junior Mobile Programmer (2025)", "LSP Teknologi Digital"],
   },
   {
@@ -233,13 +237,13 @@ export const credentials = [
     title: "Juara 2 IoT",
     year: "KMIPN VIII 2026",
     featured: true,
-    items: ["Kategori Bisnis & Skalabilitas IoT", "Tim Rekayasa Tektrone — POLTEKBA", "Politeknik Negeri Ujung Pandang"],
+    items: ["Kategori Bisnis & Skalabilitas IoT", "Tim Rekayasa Tektrone, POLTEKBA", "Politeknik Negeri Ujung Pandang"],
   },
   {
     label: "Sertifikasi LSP",
     title: "Automation Maintenance",
     year: "2026",
-    items: ["Junior Engineer — LSP POLTEKBA", "PKL Beasco: predikat Sangat Baik", "Prakerin NJM: predikat Sangat Puas"],
+    items: ["Junior Engineer, LSP POLTEKBA", "PKL Beasco: predikat Sangat Baik", "Prakerin NJM: predikat Sangat Puas"],
   },
 ] as const
 
@@ -254,11 +258,11 @@ export const faqs = [
   },
   {
     q: "Apakah punya pengalaman di lingkungan industri?",
-    a: "Ya — facility maintenance di PT Trakindo Utama, magang HVAC & WTP di Pertamina Hulu Mahakam, dan instalasi tenaga listrik di PT Nusa Jaya Mandiri.",
+    a: "Ya: facility maintenance di PT Trakindo Utama, magang HVAC & WTP di Pertamina Hulu Mahakam, dan instalasi tenaga listrik di PT Nusa Jaya Mandiri.",
   },
   {
     q: "Selain elektrikal, apa lagi yang bisa Anda kerjakan?",
-    a: "Pengembangan perangkat IoT, machine learning (MediaPipe, CNN), serta web dan mobile — tersertifikasi BNSP.",
+    a: "Pengembangan perangkat IoT, machine learning (MediaPipe, CNN), serta web dan mobile (tersertifikasi BNSP).",
   },
 ] as const
 
@@ -273,9 +277,9 @@ export const navLinks = [
 
 // Activity photos (user-provided). First item is shown large.
 export const gallery = [
-  { image: base + "/images/real/kmipn-poster.jpg", caption: "Juara 2 IoT — KMIPN VIII 2026" },
-  { image: base + "/images/real/penyerahan-juara-motor-listrik.jpg", caption: "Menyerahkan piala lomba motor listrik sebagai Koordinator IPTEK" },
-  { image: base + "/images/real/kmipn-sertifikat.jpg", caption: "Sertifikat Juara 2 KMIPN VIII 2026" },
+  { image: base + "/images/real/kmipn-poster.jpg", caption: "Juara 2 IoT, KMIPN VIII 2026" },
+  { image: base + "/images/real/penyerahan-juara-motor-listrik.jpg", caption: "Menyerahkan piala lomba motor listrik sebagai Koordinator IPTEK", wide: true },
+  { image: base + "/images/real/kmipn-sertifikat.jpg", caption: "Sertifikat Juara 2 KMIPN VIII 2026", wide: true },
   { image: base + "/images/real/kemitraan-group.jpg", caption: "Program Kemitraan Berdikari" },
   { image: base + "/images/real/mobile-app.jpg", caption: "Pemrograman aplikasi mobile" },
 ] as const

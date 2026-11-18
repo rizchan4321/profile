@@ -84,21 +84,26 @@ export function Tools() {
   const list = (hidden?: boolean) => (
     <ul aria-hidden={hidden} className="flex shrink-0 items-center gap-12 pr-12">
       {tools.map((t) => (
-        <li key={t} className="whitespace-nowrap font-display text-base font-semibold tracking-tight text-text/60 sm:text-lg">
+        <li key={t} className="whitespace-nowrap font-display text-base font-semibold tracking-tight text-text/70 sm:text-lg">
           {t}
         </li>
       ))}
     </ul>
   )
   return (
-    <section aria-labelledby="tools-title" className="bg-paper-2 py-14">
+    <section aria-labelledby="tools-title" className="group/tools bg-paper-2 py-14">
       <h2 id="tools-title" className="px-4 text-center text-lg font-medium">Tools & Platform yang Saya Gunakan</h2>
       <div className="group mt-6 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]">
-        <div className="flex w-max animate-[marquee_35s_linear_infinite] group-hover:[animation-play-state:paused]">
+        <div className="flex w-max animate-[marquee_35s_linear_infinite] group-hover:[animation-play-state:paused] group-has-[:checked]/tools:[animation-play-state:paused]">
           {list()}
           {list(true)}
         </div>
       </div>
+      {/* CSS-only pause: touch and keyboard users can't hover. */}
+      <label className="mx-auto mt-3 flex min-h-11 w-fit items-center gap-2 px-4 text-sm text-muted motion-reduce:hidden">
+        <input type="checkbox" className="h-4 w-4 accent-[var(--accent-strong)]" />
+        Jeda animasi
+      </label>
     </section>
   )
 }
@@ -111,7 +116,7 @@ export function Services() {
       <div className="mx-auto max-w-6xl">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <Heading title="Keahlian teknis yang saya bawa ke setiap pekerjaan" />
-          <a href="#contact" className="reveal inline-flex h-11 w-fit items-center rounded-full bg-accent-strong px-5 text-sm font-semibold text-white hover:bg-accent">
+          <a href="#contact" className="reveal inline-flex h-11 w-fit items-center rounded-full bg-accent-strong px-5 text-sm font-semibold text-white hover:bg-accent-hover">
             Diskusikan Kebutuhan
           </a>
         </div>
@@ -152,11 +157,12 @@ export function Projects() {
             <li
               key={p.title}
               className={`reveal-item group relative overflow-hidden rounded-3xl bg-ink text-white ${
-                wide
-                  ? "aspect-[4/5] sm:aspect-[16/9] md:col-span-2 md:aspect-[21/9]"
-                  : "aspect-[4/5] sm:aspect-[4/3]"
+                p.fullImage ? "flex flex-col sm:block" : "aspect-[4/5]"
+              } ${
+                wide ? "sm:aspect-[16/9] md:col-span-2 md:aspect-[21/9]" : "sm:aspect-[4/3]"
               }`}
             >
+              <div className={p.fullImage ? "relative aspect-[3/2] sm:absolute sm:inset-0 sm:aspect-auto" : "absolute inset-0"}>
               <Image
                 src={p.image}
                 alt={p.title}
@@ -165,8 +171,9 @@ export function Projects() {
                 className="object-cover opacity-80 transition-transform duration-500 group-hover:scale-[1.03]"
                 style={p.focus ? { objectPosition: p.focus } : undefined}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-5 sm:p-7">
+              </div>
+              <div className={`absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent ${p.fullImage ? "hidden sm:block" : ""}`} />
+              <div className={`${p.fullImage ? "relative sm:absolute" : "absolute"} inset-x-0 bottom-0 p-5 sm:p-7`}>
                 <p className="text-xs text-white/70">
                   {p.year ? `${p.category} · ${p.year}` : p.category}
                 </p>
@@ -179,7 +186,7 @@ export function Projects() {
                 </ul>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {p.download && (
-                    <a href={p.download} download className="inline-flex h-10 items-center gap-1.5 rounded-full bg-accent-strong px-4 text-xs font-semibold hover:bg-accent">
+                    <a href={p.download} download className="inline-flex h-10 items-center gap-1.5 rounded-full bg-accent-strong px-4 text-xs font-semibold hover:bg-accent-hover">
                       <Download size={14} aria-hidden="true" /> {p.downloadLabel}
                     </a>
                   )}
@@ -240,7 +247,7 @@ export function Credentials() {
           <p className="font-display text-[clamp(1.3rem,3vw,2rem)] font-medium leading-tight">
             Mari wujudkan sistem yang andal bersama.
           </p>
-          <a href="#contact" className="mt-6 inline-flex h-12 items-center rounded-full bg-accent-strong px-6 text-sm font-semibold hover:bg-accent">
+          <a href="#contact" className="mt-6 inline-flex h-12 items-center rounded-full bg-accent-strong px-6 text-sm font-semibold hover:bg-accent-hover">
             Hubungi Saya
           </a>
         </div>
@@ -314,13 +321,13 @@ export function Gallery() {
           {gallery.map((g, i) => (
             <li
               key={g.caption}
-              className={`reveal-item group relative overflow-hidden rounded-3xl bg-ink ${i === 0 ? "col-span-2 row-span-2" : ""}`}
+              className={`reveal-item group relative overflow-hidden rounded-3xl bg-ink ${i === 0 ? "col-span-2 row-span-2" : "wide" in g ? "col-span-2 md:col-span-1" : ""}`}
             >
               <Image
                 src={g.image}
                 alt={g.caption}
                 fill
-                sizes={i === 0 ? "(min-width: 768px) 50vw, 100vw" : "(min-width: 768px) 25vw, 50vw"}
+                sizes={i === 0 ? "(min-width: 768px) 50vw, 100vw" : "(min-width: 768px) 25vw, " + ("wide" in g ? "100vw" : "50vw")}
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />

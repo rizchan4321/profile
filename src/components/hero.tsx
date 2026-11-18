@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { useEffect, useLayoutEffect, useRef } from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { gsap } from "gsap"
 import { heroSkills, profile } from "@/lib/content"
 
@@ -17,6 +17,8 @@ export function Hero() {
   const stageRef = useRef<HTMLDivElement>(null)
   const ringRef = useRef<HTMLDivElement>(null)
   const labelRefs = useRef<(HTMLLIElement | null)[]>([])
+  const [paused, setPaused] = useState(false)
+  const pausedRef = useRef(false)
 
   useIsoLayoutEffect(() => {
     const stage = stageRef.current
@@ -62,6 +64,7 @@ export function Hero() {
     }, rootRef)
 
     const tick = (_t: number, dt: number) => {
+      if (pausedRef.current) return
       angle += dt * 0.00035
       place()
     }
@@ -100,6 +103,18 @@ export function Hero() {
         <div className="relative z-10 mx-auto -mt-24 h-[480px] max-w-4xl [perspective:1100px] sm:-mt-36 sm:h-[620px]">
           {/* Ambient glow behind the photo */}
           <div className="hero-fade absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/30 blur-3xl sm:h-96 sm:w-96" />
+
+          <button
+            type="button"
+            onClick={() => {
+              pausedRef.current = !paused
+              setPaused(!paused)
+            }}
+            aria-pressed={paused}
+            className="absolute bottom-2 right-0 z-20 min-h-11 rounded-full border border-white/15 px-4 text-xs text-on-ink-muted transition-colors hover:text-white motion-reduce:hidden"
+          >
+            {paused ? "Putar orbit" : "Jeda orbit"}
+          </button>
 
           <div ref={stageRef} className="absolute inset-0 [transform:rotateX(-14deg)] [transform-style:preserve-3d]">
             {/* Orbit ring lying flat in the x/z plane, at chest height */}
@@ -145,7 +160,7 @@ export function Hero() {
         <div className="hero-fade mt-7 flex flex-wrap justify-center gap-3">
           <a
             href="#projects"
-            className="inline-flex h-12 items-center rounded-full bg-accent-strong px-6 text-sm font-semibold transition-colors hover:bg-accent"
+            className="inline-flex h-12 items-center rounded-full bg-accent-strong px-6 text-sm font-semibold transition-colors hover:bg-accent-hover"
           >
             Lihat Project
           </a>

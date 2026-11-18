@@ -13,7 +13,8 @@
   --text-muted: #5b5b5b;
   --on-ink-muted: #a3a3a3;
   --accent: #ff5b1f; /* decorative / large text on dark */
-  --accent-strong: #d4410a; /* button fills: white text passes AA */
+  --accent-strong: #c23b08; /* button fills + small text on light: AA both ways */
+  --accent-hover: #a83308; /* hover goes darker so white text keeps contrast */
   --line: #d6d6d6;
 }
 
@@ -28,6 +29,7 @@
   --color-on-ink-muted: var(--on-ink-muted);
   --color-accent: var(--accent);
   --color-accent-strong: var(--accent-strong);
+  --color-accent-hover: var(--accent-hover);
   --color-line: var(--line);
 
   --font-sans: var(--font-geist-sans);
@@ -46,6 +48,14 @@
     outline: 2px solid var(--accent);
     outline-offset: 3px;
     border-radius: 6px;
+  }
+
+  /* Tailwind v4 preflight resets buttons to the default cursor. */
+  button, summary, label[for], [role="button"], [role="option"] {
+    cursor: pointer;
+  }
+  :disabled {
+    cursor: not-allowed;
   }
 
   ::selection {
