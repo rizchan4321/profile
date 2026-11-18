@@ -29,9 +29,10 @@ export function Hero() {
     // because opacity on elements inside preserve-3d would flatten the scene.
     const intro = { a: reduce ? 1 : 0 }
     let angle = 0
+    // Cached: reading offsetWidth every frame forced a layout per frame and made the scroll stutter.
+    let w = stage.offsetWidth
 
     const place = () => {
-      const w = stage.offsetWidth
       // Narrow screens: tighter orbit and only the first 6 labels (rest are max-sm:hidden).
       const narrow = w < 640
       const n = narrow ? MOBILE_LABELS : heroSkills.length
@@ -47,11 +48,13 @@ export function Hero() {
       })
     }
 
-    place()
-    if (reduce) {
-      window.addEventListener("resize", place)
-      return () => window.removeEventListener("resize", place)
+    const onResize = () => {
+      w = stage.offsetWidth
+      place()
     }
+    place()
+    window.addEventListener("resize", onResize)
+    if (reduce) return () => window.removeEventListener("resize", onResize)
 
     const ctx = gsap.context(() => {
       // Intro: title first, then the photo slides up over it with buttons + glow + orbit.
@@ -84,6 +87,7 @@ export function Hero() {
       ctx.revert()
       gsap.ticker.remove(tick)
       window.removeEventListener("pointermove", onMove)
+      window.removeEventListener("resize", onResize)
     }
   }, [])
 

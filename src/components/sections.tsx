@@ -91,19 +91,14 @@ export function Tools() {
     </ul>
   )
   return (
-    <section aria-labelledby="tools-title" className="group/tools bg-paper-2 py-14">
+    <section aria-labelledby="tools-title" className="bg-paper-2 py-14">
       <h2 id="tools-title" className="px-4 text-center text-lg font-medium">Tools & Platform yang Saya Gunakan</h2>
       <div className="group mt-6 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]">
-        <div className="flex w-max animate-[marquee_35s_linear_infinite] group-hover:[animation-play-state:paused] group-has-[:checked]/tools:[animation-play-state:paused]">
+        <div className="flex w-max animate-[marquee_35s_linear_infinite] group-hover:[animation-play-state:paused]">
           {list()}
           {list(true)}
         </div>
       </div>
-      {/* CSS-only pause: touch and keyboard users can't hover. */}
-      <label className="mx-auto mt-3 flex min-h-11 w-fit items-center gap-2 px-4 text-sm text-muted motion-reduce:hidden">
-        <input type="checkbox" className="h-4 w-4 accent-[var(--accent-strong)]" />
-        Jeda animasi
-      </label>
     </section>
   )
 }
